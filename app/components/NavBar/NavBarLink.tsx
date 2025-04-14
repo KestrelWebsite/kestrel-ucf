@@ -26,9 +26,16 @@ const NavBarLink = ({ label, href, isNewWindow }: Props) => {
   if (label.toLowerCase() === "teams") {
     return (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        {/* <DropdownMenuTrigger asChild>
           <button className={baseClasses + activeClass}>{label}</button>
-        </DropdownMenuTrigger>
+        </DropdownMenuTrigger> */}
+        {/* Clicking this now goes to /teams */}
+        <Link
+          href="/teams"
+          className={baseClasses + activeClass}
+        >
+          {label}
+        </Link>
         <DropdownMenuContent
           align="start" // adjust alignment as needed
           className="z-9999"
