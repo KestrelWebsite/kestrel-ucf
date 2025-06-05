@@ -1,5 +1,5 @@
 import arduinoBoard from "@/public/ArduinoBoard.png";
-import imageTeam from "@/public/GroupSample.jpg";
+import imageTeam from "@/public/Group.jpg";
 import neuralNetwork from "@/public/NeuralNetwork.jpg";
 import research from "@/public/Research.png";
 import Image from "next/image";

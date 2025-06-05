@@ -25,7 +25,9 @@ const TeamCard = ({ title, description, image, link}: TeamCardProps) => {
                     src = {image}
                     alt = {title}
                 />
-                <CardTitle className = "text-2xl text-white"> </CardTitle>
+                <CardTitle className = "text-2xl text-white">
+                    {title}
+                </CardTitle>
                 <CardDescription className = "overflow-y-auto max-h-[300px] text-white/50">
                     {description}
                 </CardDescription>

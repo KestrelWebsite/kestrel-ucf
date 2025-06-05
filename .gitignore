@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Never commit accidental eval files or keys
+eval*
+*.pub
+id_rsa*
