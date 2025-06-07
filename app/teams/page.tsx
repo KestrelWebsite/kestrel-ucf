@@ -10,28 +10,40 @@ import Link from "next/link";
 const TeamsPage = () => {
   const cards: TeamCardProps[] = [
     {
-      title: "Sensor Team",
-      description: 'The Sensor Team is currently developing the embedded system to operate the VL53L1X TOF sensor array. They are focusing on converting raw sensor data into a 3D mesh sensor calibration, optimizing ROI scanning, and ensuring robust data collection near drone propellers.',
-      image: imageSensors,
-      link: "/teams/sensors",
-    },
-    {
       title: "Pathing Team",
       description: 'The Pathing Team is testing three approaches, with a fourth being investigated: cruise control for target tracking, mesh-based path planning using sensor data, potential fields method, and geometric curving for dynamic obstacle avoidance. Each method enables the drone to navigate while maintaining optimal positioning relative to its environment and target.',
       image: imagePathing,
       link: "/teams/pathing",
     },
     {
-      title: "ArduPilot Team",
-      description:'The Simulation Team is using SITL to emulate the ArduPilot firmware and test flight logic, while Gazebo provides realistic sensor data to complete the closed-loop system. Together, they allow full validation of navigation algorithms in a fully simulated environment before real-world deployment.',
-      image: imageArdupilot,
-      link: "/teams/ardupilot",
+      title: "Embedded Team",
+      description: 'The Sensor Team is currently developing the embedded system to operate the VL53L1X TOF sensor array. They are focusing on converting raw sensor data into a 3D mesh sensor calibration, optimizing ROI scanning, and ensuring robust data collection near drone propellers.',
+      image: imageSensors,
+      link: "/teams/embedded",
     },
     {
       title: "Model Team",
       description: 'The Model team for Kestrel has implemented a SORT MOT model. This team is currently working on benchmarking this model as well as implementing the improved Deep-SORT model to increase tracking accuracy. Furthermore this team is finalizing there models with a custom dataset fit to the project scope.',
       image: imageModel,
       link: "/team/model",
+    },
+    {
+      title: "Simulation Team",
+      description:'The Simulation Team is using SITL to emulate the ArduPilot firmware and test flight logic, while Gazebo provides realistic sensor data to complete the closed-loop system. Together, they allow full validation of navigation algorithms in a fully simulated environment before real-world deployment.',
+      image: imageArdupilot,
+      link: "/teams/simulation",
+    },
+    {
+      title: "Hardware Team",
+      description: 'The Hardware team ...',
+      image: imageModel,
+      link: "/team/hardware",
+    },
+    {
+      title: "Website Team",
+      description: 'The Website team ...',
+      image: imageModel,
+      link: "/team/website",
     },
   ];
 
