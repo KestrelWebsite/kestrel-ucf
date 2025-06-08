@@ -16,7 +16,7 @@ import {
 
 const AboutCard = ({ title, description, image }: AboutCardProps) => {
   return (
-    <Card className="bg-slate-600 rounded-xl p-4 w-[320px] border-slate-700 shadow-md">
+    <Card className="w-full h-fit bg-slate-600 border-slate-700">
       <CardHeader>
         <Image
           className="rounded-lg mb-4 shadow-md hover:scale-102 transition-all duration-300 h-50"
