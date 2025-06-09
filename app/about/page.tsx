@@ -8,30 +8,40 @@ import AboutCard, { AboutCardProps } from "./_components/AboutCard";
 const AboutPage = () => {
   const cards: AboutCardProps[] = [
     {
-      title: "Hardware Team",
-      description: `Ensures Kestrel's stability by developing custom electronics that integrate with software systems. 
-      They're building a VL53L1X ToF sensor array to generate region-specific data for heat maps and collecting hardware metrics like weight distribution to support dynamic piloting. 
-      Their next goal is enabling real-time responsiveness—feeding structured sensor and path data into Ardu-Pilot so the drone can follow routes, avoid obstacles, and track targets through coordinated control.`,
+      title: "Pathing Team",
+      description: `Responsible for the creation of the pathing nodes (Research, Theory, Implementation) as well as the integration of the pathing nodes into the system as a whole.
+`,
+      image: neuralNetwork, 
+    },
+    {
+      title: "Embedded Team",
+      description: `Responsible for enabling autonomous drone navigation by integrating hardware and sensor systems to ensure real-time control, obstacle avoidance, and dynamic target tracking.
+`,
       image: arduinoBoard,
     },
     {
-      title: "Software Team",
-      description: `Powers Kestrel’s intelligence by integrating machine learning and autonomous flight logic. 
-      They use real-time ToF sensor data to build heat maps for environmental awareness and refine tracking models for accurate in-flight identification. 
-      They're also improving navigation with geodesic distance and Ricci flow algorithms, while developing base station logic to manage commands like takeoff and landing for smooth operator control.`,
+      title: "Model Team",
+      description: `Responsible for the AI and object tracking portion of the project and implementing a deep learning model called DeepSORT, which will allow the drone to accurately track and follow PEV riders over time.
+`,
+      image: research,
+    },
+    {
+      title: "Simulation Team",
+      description: `Backbone of the project and provides insight and deeper knowledge into the methods being developed. Lays the foundation for the embedded team, who will use that work to develop interface modules for the real hardware.`,
       image: neuralNetwork,
     },
     {
-      title: "Research",
-      description: `Our research focuses on object tracking, deep learning, obstacle
-              avoidance, and flight path optimization. By experimenting with
-              neural networks and decision-making algorithms, we aim to improve
-              Kestrel's ability to fly autonomously in dynamic environments.
-              This includes navigating complex spaces, adapting to unseen
-              obstacles, and making real-time decisions without human input.`,
-      image: research,
+      title: "Hardware Team",
+      description: `The Hardware section of the Kestrel project deals with the physical demands of the UAV. Items such as propellers, sensors, power, mounting and speed. Hardware needs to work closely with the other sections of the project because the vehicle and its components are the foundation the other sections build off of and branch out.`,
+      image: arduinoBoard,
+    },
+    {
+      title: "Website Team",
+      description: `Builds and maintains Kestrel’s web platform to showcase team progress, updates, and documentation.`,
+      image: imageTeam,
     },
   ];
+  
 
   return (
     <div className="h-fit w-full bg-gradient-to-t from-slate-700 to-slate-900">
@@ -50,11 +60,26 @@ const AboutPage = () => {
         in autonomous systems.
       </div>
       <div className="flex w-full justify-center items-center">
-        <div className="flex flex-row gap-20 justify-center pt-8 max-w-5xl">
-          {cards.map((card) => (
-            <AboutCard {...card} key={card.title} />
-          ))}
-        </div>
+        
+<div className="flex flex-col items-center gap-8 pt-10">
+  
+  
+  <div className="flex flex-row justify-center flex-wrap gap-10 w-full max-w-6xl">
+    {cards.slice(0, 3).map((card) => (
+      <AboutCard {...card} key={card.title} />
+    ))}
+  </div>
+
+  
+  <div className="flex flex-row justify-center flex-wrap gap-10 w-full max-w-6xl">
+    {cards.slice(3, 6).map((card) => (
+      <AboutCard {...card} key={card.title} />
+    ))}
+  </div>
+
+</div>
+
+
       </div>
 
       <section className="pt-10 w-full">
