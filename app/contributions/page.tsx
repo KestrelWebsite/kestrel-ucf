@@ -4,10 +4,11 @@ import imageACM from "@/public/clubs/acm.jpg";
 import imageAIUCF from "@/public/clubs/aiucf.jpg";
 import imageIEEE from "@/public/clubs/ieee.jpg";
 import imageKnightHacks from "@/public/clubs/knighthacks.jpg";
+import imageBlueOrigin from "@/public/clubs/blueorigin.jpg";
 import ContributorsCard, { ContributorsCardProps } from "./_components/ContributorsCard";
 import Link from "next/link";
 
-const ClubsPage = () => {
+const ContributorsPage = () => {
     const cards: ContributorsCardProps[] = [
         {
             title: "ACM",
@@ -33,18 +34,24 @@ const ClubsPage = () => {
             image: imageKnightHacks,
             link: "/contributions/KnightHacks",
         },
+        {
+            title: "Blue Origin",
+            description: "...",
+            image: imageBlueOrigin,
+            link: "/contributions/BlueOrigin",
+        },
     ];
 
     return(
         <div className = "h-fit w-full bg-gradient-to-t from-slate-700 to-slate-900">
             {/* Heading */}
             <div className = "pt-[80px] text-5xl font-bold text-center text-neutral-200 font-mono">
-                Meet the Clubs
+                Meet the Contributors
             </div>
 
             {/* Intro Description */}
             <div className = "text-amber-50 pt-6 text-center font-serif justify-center w-2/3 items-center m-auto">
-                These clubs are ...
+                These contributors are ...
             </div>
 
             {/* Card Grid */}
@@ -65,4 +72,4 @@ const ClubsPage = () => {
     );
 };
 
-export default ClubsPage;
+export default ContributorsPage;
