@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface Props {
   photoUrl: string | null | undefined;
@@ -9,7 +10,7 @@ const PhotoView = ({ photoUrl }: Props) => {
 
   return (
     <div className="w-full h-auto">
-      <img
+      <Image
         src={photoUrl}
         alt="devlog photo"
         className="w-full h-full object-cover"
