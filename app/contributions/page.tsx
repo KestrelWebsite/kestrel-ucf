@@ -1,5 +1,5 @@
-import Image, { StaticImageData } from "next/image";
-import react from "react";
+//import Image, { StaticImageData } from "next/image";
+//import react from "react";
 import imageACM from "@/public/clubs/acm.jpg";
 import imageAIUCF from "@/public/clubs/aiucf.jpg";
 import imageIEEE from "@/public/clubs/ieee.jpg";
