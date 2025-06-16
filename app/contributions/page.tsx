@@ -30,7 +30,7 @@ const ContributorsPage = () => {
         },
         {
             title: "Knight Hacks",
-            description: "Knight Hacks is UCF’s largest student-run software development org, offering weekly workshops, coding nights, and an annual 36-hour hackathon for hands-on building and networking. We provide year-round mentorship, industry partnerships, and leadership opportunities to support developers at every skill level.",
+            description: "Knight Hacks is UCF&aposs largest student-run software development org, offering weekly workshops, coding nights, and an annual 36-hour hackathon for hands-on building and networking. We provide year-round mentorship, industry partnerships, and leadership opportunities to support developers at every skill level.",
             image: imageKnightHacks,
             link: "https://blade.knighthacks.org/",
         },
