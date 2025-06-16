@@ -18,10 +18,10 @@ export interface ContributorsCardProps{
 
 const ContributorsCard = ({ title, description, image, link}: ContributorsCardProps) => {
     return(
-        <Card className = "bg-slate-600 rounded-xl p-4 w-[320px] border-slate-700 shadow-md">
+        <Card className = "bg-slate-600 h-fit w-full rounded-xl p-4 w-[320px] border-slate-700 shadow-md">
             <CardHeader>
                 <Image
-                    className = "rounded-lg mb-4 shadow-md transition-all duration-300"
+                    className = "rounded-lg mb-4 shadow-md transition-all duration-300 h-50 hover:scale-102"
                     src = {image}
                     alt = {title}
                 />
@@ -35,7 +35,7 @@ const ContributorsCard = ({ title, description, image, link}: ContributorsCardPr
             <CardContent />
             <CardFooter>
                 <Link href = {link} className = "text-blue-300 hover:underline text-sm">
-                    Link to Contributor's Website
+                    Link to Contributor&apos;s Website
                 </Link>
             </CardFooter>
         </Card>
