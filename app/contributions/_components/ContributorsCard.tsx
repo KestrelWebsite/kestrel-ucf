@@ -35,7 +35,7 @@ const ContributorsCard = ({ title, description, image, link}: ContributorsCardPr
             <CardContent />
             <CardFooter>
                 <Link href = {link} className = "text-blue-300 hover:underline text-sm">
-                    Learn More
+                    Link to Contributor's Website
                 </Link>
             </CardFooter>
         </Card>
