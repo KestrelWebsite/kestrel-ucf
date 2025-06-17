@@ -12,13 +12,13 @@ const ContributorsPage = () => {
     const cards: ContributorsCardProps[] = [
         {
             title: "ACM",
-            description: "...",
+            description: "Coming soon...",
             image: imageACM,
             link: "/contributions/ACM",
         },
         {
             title: "AI@UCF",
-            description: "...",
+            description: "Coming soon...",
             image: imageAIUCF,
             link: "https://ucfai.org/",
         },
@@ -30,13 +30,13 @@ const ContributorsPage = () => {
         },
         {
             title: "Knight Hacks",
-            description: "Knight Hacks is UCF&aposs largest student-run software development org, offering weekly workshops, coding nights, and an annual 36-hour hackathon for hands-on building and networking. We provide year-round mentorship, industry partnerships, and leadership opportunities to support developers at every skill level.",
+            description: "Knight Hacks is UCF\'s largest student-run software development org, offering weekly workshops, coding nights, and an annual 36-hour hackathon for hands-on building and networking. We provide year-round mentorship, industry partnerships, and leadership opportunities to support developers at every skill level.",
             image: imageKnightHacks,
             link: "https://blade.knighthacks.org/",
         },
         {
             title: "Blue Origin",
-            description: "...",
+            description: "Coming soon...",
             image: imageBlueOrigin,
             link: "/contributions/BlueOrigin",
         },
@@ -55,7 +55,7 @@ const ContributorsPage = () => {
             </div>
 
             {/* Card Grid */}
-            <div className= "flex flex-col items-center gap-8 pt-1 px-6 sm:px-4 lg:px-8 space-y-6">
+            <div className= "flex flex-col items-center gap-8 pt-1 px-6 sm:px-4 lg:px-8 space-y-1">
                 <div className = "grid grid-cols-1 sm:grid-cols-3 gap-8">
                     {cards.slice(0, 3).map((card) => (
                         <Link
