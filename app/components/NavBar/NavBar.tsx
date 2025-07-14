@@ -10,6 +10,7 @@ const links: { label: string; href: string; isNewWindow?: boolean }[] = [
     href: "https://github.com/Autonomous-droneProject/Main",
     isNewWindow: true,
   },
+  { label: "Interactive Model", href: "/interactive-model" },
 ];
 
 export default function NavBar() {
