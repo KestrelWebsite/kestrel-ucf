@@ -5,11 +5,10 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stage, useGLTF } from '@react-three/drei';
 
 function Model() {
-  const { scene } = useGLTF('/models/InteractiveKesterelView.glb'); // simpler!
+  const { scene } = useGLTF('/models/InteractiveKesterelView.glb');
   return <primitive object={scene} scale={1.5} />;
 }
 
-// Optional: If you want to preload the model for faster loading
 useGLTF.preload('/models/InteractiveKesterelView.glb');
 
 const ModelViewer = () => {
