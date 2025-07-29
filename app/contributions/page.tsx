@@ -57,6 +57,7 @@ const ContributorsPage = () => {
 
             {/* Top Card - Blue Origin */}
             <div className = "flex flex-col items-center pt-1 px-6 sm:px-4 lg:px-8 space-y-1 mb-12">
+                <h2 className = "text-3xl font-semibold font-mono text-amber-200 mb-6">Industry Sponsor</h2>
                 {cards.slice(0, 1).map((card) => (
                     <Link
                         href = {card.link}
@@ -73,7 +74,8 @@ const ContributorsPage = () => {
 
             {/* Card Grid */}
             <div className= "flex flex-col items-center gap-8 pt-1 px-6 sm:px-4 lg:px-8 space-y-1">
-                <div className = "grid grid-cols-1 sm:grid-cols-3 gap-8">
+                <h2 className = "text-3xl font-semibold font-mono text-amber-200 mb-6 text-center">Student Organizations</h2>
+                <div className = "grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center">
                     {cards.slice(1, 3).map((card) => (
                         <Link
                             href= {card.link}
