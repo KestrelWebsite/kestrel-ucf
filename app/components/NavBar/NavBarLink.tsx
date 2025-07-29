@@ -62,6 +62,43 @@ const NavBarLink = ({ label, href, isNewWindow }: Props) => {
     );
   }
 
+  // Use shadcn dropdown for "Contributors"
+  if (label.toLowerCase() === "contributions"){
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          {/* Clicking this now goes to /teams */}
+          <Link
+            href="/contributions"
+            className={baseClasses + activeClass}
+          >
+            {label}
+          </Link>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="start" // adjust alignment as needed
+          className="z-9999"
+        >
+          <DropdownMenuItem asChild>
+            <Link href="/contributions/BlueOrigin">Blue Origin</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/contributions/ACM">ACM</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/contributions/AI@UCF">AI@UCF</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/contributions/IEEE">IEEE</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/contributions/KnightHacks">Knight Hacks</Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
+
   // For normal links, use Next.js <Link>
   return (
     <Link
