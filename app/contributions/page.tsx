@@ -10,6 +10,13 @@ import Link from "next/link";
 
 const ContributorsPage = () => {
     const cards: ContributorsCardProps[] = [
+        // Going to be separated from the other contributors
+        {
+            title: "Blue Origin",
+            description: "Coming soon...",
+            image: imageBlueOrigin,
+            link: "/contributions/BlueOrigin",
+        },
         {
             title: "ACM",
             description: "Coming soon...",
@@ -34,12 +41,6 @@ const ContributorsPage = () => {
             image: imageKnightHacks,
             link: "https://blade.knighthacks.org/",
         },
-        {
-            title: "Blue Origin",
-            description: "Coming soon...",
-            image: imageBlueOrigin,
-            link: "/contributions/BlueOrigin",
-        },
     ];
 
     return(
@@ -54,10 +55,26 @@ const ContributorsPage = () => {
                 These contributors are ACM, AI@UCF, IEEE, KnightHacks, and BlueOrigin. They have been instrumental in the development of the Autonomous Drone Project, providing envaluable support and expertise. Each ... has played a crucial role in shaping the project, from ... to ... . Their contributions have been vital to advancing the project and ensuring its success. We are grateful for their dedication and hard work, which have helped us achieve our goals and push the boundaries of what is possible with autonomous drone technology.
             </div>
 
+            {/* Top Card - Blue Origin */}
+            <div className = "flex flex-col items-center pt-1 px-6 sm:px-4 lg:px-8 space-y-1 mb-12">
+                {cards.slice(0, 1).map((card) => (
+                    <Link
+                        href = {card.link}
+                        key = {card.title}
+                        className = "block transform hover:-translate-y-1 transition"
+                    >
+                        <ContributorsCard {...card} />
+                    </Link>
+                ))}
+            </div>
+
+            {/* Visual Seperator */}
+            <hr className = "w-2/3 mx-auto border-slate-600 mb-12"/>
+
             {/* Card Grid */}
             <div className= "flex flex-col items-center gap-8 pt-1 px-6 sm:px-4 lg:px-8 space-y-1">
                 <div className = "grid grid-cols-1 sm:grid-cols-3 gap-8">
-                    {cards.slice(0, 3).map((card) => (
+                    {cards.slice(1, 3).map((card) => (
                         <Link
                             href= {card.link}
                             key= {card.title}
