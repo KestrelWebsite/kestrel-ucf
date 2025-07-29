@@ -14,31 +14,31 @@ const ContributorsPage = () => {
             title: "Blue Origin",
             description: "Coming soon...",
             image: imageBlueOrigin,
-            link: "https://www.blueorigin.com/",
+            link: "/contributors/BlueOrigin",
         },
         {
             title: "ACM",
             description: "Coming soon...",
             image: imageACM,
-            link: "https://linktr.ee/acmucf",
+            link: "/contributors/ACM",
         },
         {
             title: "AI@UCF",
             description: "Coming soon...",
             image: imageAIUCF,
-            link: "https://ucfai.org/",
+            link: "/contributors/AI@UCF",
         },
         {
             title: "IEEE",
             description: "IEEE UCF is a 300-member student chapter offering hands-on ECE projects—from autonomous robotics to beginner builds—and workshops that build real-world skills. Open to all majors, we pair technical work with professional development, social events, and community service, helping members land internships and advance their careers.",
             image: imageIEEE,
-            link: "https://ieee.cecs.ucf.edu/",
+            link: "/contributors/IEEE",
         },
         {
             title: "Knight Hacks",
             description: "Knight Hacks is UCF\'s largest student-run software development org, offering weekly workshops, coding nights, and an annual 36-hour hackathon for hands-on building and networking. We provide year-round mentorship, industry partnerships, and leadership opportunities to support developers at every skill level.",
             image: imageKnightHacks,
-            link: "https://blade.knighthacks.org/",
+            link: "/contributors/KnightHacks",
         },
     ];
 
