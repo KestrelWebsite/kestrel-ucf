@@ -67,7 +67,7 @@ const NavBarLink = ({ label, href, isNewWindow }: Props) => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          {/* Clicking this now goes to /teams */}
+          {/* Clicking this now goes to /contributions */}
           <Link
             href="/contributions"
             className={baseClasses + activeClass}
