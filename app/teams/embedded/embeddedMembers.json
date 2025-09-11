@@ -1,0 +1,88 @@
+{
+    "Embedded": [
+      {
+        "name": "Rafeed Khan",
+        "role": [
+          "Team Lead",
+          "Main Architect & Software Developer"
+        ],
+        "major": "CpE (VLSI Track)",
+        "contribution": "Designed and developed the full embedded software stack, including all packages, nodes, messages, and launch files, from initial design through implementation.",
+        "links": [
+          {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/rafeed-khan/"
+          },
+          {
+            "type": "github",
+            "href": "https://github.com/BigManRaffa"
+          }
+        ]
+      },
+      {
+        "name": "Aldem Pido",
+        "role": "Hardware & Systems",
+        "major": "EE (Power Track)",
+        "contribution": "Developed the ROS 2 Drivers for the i2c MUX for hardware interfacing, managed the ROS 2 build systems (CMake, package.xml) and led debugging efforts to ensure all packages compiled and integrated correctly.",
+        "links": [
+          {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/aldempido/"
+          },
+          {
+            "type": "github",
+            "href": "https://github.com/Syndric"
+          }
+        ]
+      },
+      {
+        "name": "Yousef Alaa Awad",
+        "role": "Simulation & Integration",
+        "major": "CpE (VLSI Track)",
+        "contribution": "Led the integration of the software stack within the simulation environment (Gazebo, ArduPilot SITL) and configured the interface with QGroundControl.",
+        "links": [
+          {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/yousefalaaawad/"
+          },
+          {
+            "type": "github",
+            "href": "https://github.com/Quil180"
+          }
+        ]
+      },
+      {
+        "name": "Matthew Giannacco",
+        "role": "Testing & Validation",
+        "major": "EE (Power Track)",
+        "contribution": "Conducted extensive simulation testing to validate node performance, and assisted with hardware integration and debugging.",
+        "links": [
+          {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/matthew-giannacco-76a7831b9/"
+          },
+          {
+            "type": "github",
+            "href": "https://github.com/oatcat"
+          }
+        ]
+      },
+      {
+        "name": "Sabrina Serrajian",
+        "role": "Software Developer",
+        "major": "CS",
+        "contribution": "Implemented the Dynamic Camera Control node, integrating a PID controller from the ROS 2 control toolbox to control camera servos during target tracking.",
+        "links": [
+          {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/sabrina-serrajian-81898127a/"
+          },
+          {
+            "type": "github",
+            "href": "https://github.com/srserrajian"
+          }
+        ]
+      }
+    ]
+  }
+  

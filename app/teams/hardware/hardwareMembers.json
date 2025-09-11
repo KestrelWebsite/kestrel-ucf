@@ -1,0 +1,60 @@
+{
+    "Hardware": [
+        {
+        "name": "Corbin Ledford",
+        "role": "Hardware Lead",
+        "contribution": "Lead hardware section, designed and 3d modeled the vehicle, completed initial estimates and some component selection, completed flow simulations and performance estimation",
+        "image": "placeholder",
+        "links": [
+            {
+            "type": "linkedin",
+            "href": "www.linkedin.com/in/corbinledford"
+            }
+        ]
+        },
+        {
+        "name": "Tino Hernandez",
+        "role": "Electrical",
+        "contribution": "Designed main power distribution PCB",
+        "image": "placeholder",
+        "links": [
+            {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/tino-hernandez-ee"
+            },
+            {
+            "type": "github",
+            "href": "https://github.com/vjmuzik"
+            }
+        ]
+        },
+        {
+        "name": "Aldem Pido",
+        "role": "Electrical",
+        "contribution": "Completed overall electrical design for the vehicle",
+        "image": "placeholder",
+        "links": [
+            {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/aldempido?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+            },
+            {
+            "type": "github",
+            "href": "https://github.com/Syndric"
+            }
+        ]
+        },
+        {
+        "name": "Miguel Cevallos",
+        "role": "Engineer",
+        "contribution": "Helped with initial flow simulations and help make a more precise estimate of what the total weight may be",
+        "image": "placeholder",
+        "links": [
+            {
+            "type": "linkedin",
+            "href": "https://www.linkedin.com/in/miguel-cevallos?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"
+            }
+        ]
+        }
+    ]
+}

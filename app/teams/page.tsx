@@ -1,68 +1,85 @@
+// app/teams/page.tsx
 import React from "react";
-import placeholder from "@/public/ArduinoBoard.png"; 
+import placeholder from "@/public/ArduinoBoard.png";
 import TeamCard, { TeamCardProps } from "./_components/TeamCard";
 
 const TeamsPage = () => {
+  const leadershipCard: TeamCardProps = {
+    title: "Leadership",
+    description: "Project coordination, team direction.",
+    image: placeholder,
+    link: "/teams/leadership"
+  };
+
   const cards: TeamCardProps[] = [
     {
-      title: "Embedded Team",
-      description: "placeholder description",
-      image: placeholder,
-      link: "/teams/embedded"
-    },
-    {
-      title: "Pathing Team",
-      description: "placeholder description",
-      image: placeholder,
-      link: "/teams/pathing"
-    },
-    {
-      title: "Hardware Team",
-      description: "placeholder description",
+      title: "Hardware",
+      description: "Airframe, propulsion, integration.",
       image: placeholder,
       link: "/teams/hardware"
     },
     {
-      title: "Model Team",
-      description: "placeholder description",
+      title: "Embedded",
+      description: "Firmware, I/O, control loops.",
+      image: placeholder,
+      link: "/teams/embedded"
+    },
+    {
+      title: "Model",
+      description: "3D design, CAD, rigging.",
       image: placeholder,
       link: "/teams/model"
     },
     {
-      title: "Leadership Team",
-      description: "placeholder description",
-      image: placeholder,
-      link: "/teams/leadership"
-    },
-    {
-      title: "Simulation Team",
-      description: "sdsd",
+      title: "Simulation",
+      description: "Gazebo/ROS, test scenarios.",
       image: placeholder,
       link: "/teams/simulation"
     },
     {
-      title: "Website Team",
-      description: "placeholder description",
+      title: "Pathing",
+      description: "Planning, navigation, logic.",
+      image: placeholder,
+      link: "/teams/pathing"
+    },
+    {
+      title: "Website",
+      description: "Frontend, dashboards.",
       image: placeholder,
       link: "/teams/website"
     }
-  ]
+  ];
 
-  return <div className="bg-gradient-to-t from-slate-700 to-slate-900 text-center text-neutral-200 h-fit">
-      <h1 className="pt-20 text-5xl font-bold font-mono">
-        Kestrel's Teams
-      </h1>
-      <p className="pt-10 text-base">
-        Description placeholder
-      </p>
-      <div className="flex justify-center items-center">
-        <div className="flex flex-wrap w-full py-10 max-w-[90rem] gap-8 justify-center items-center">
+  return (
+    <main className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <section className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
+        <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          Our Teams
+        </h1>
+        <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
+          Meet the groups building Kestrel—hardware, embedded control, modeling, simulation,
+          pathing, website, and leadership.
+        </p>
+      </section>
+
+      {/* Leadership card (on its own row, centered) */}
+      <section className="max-w-4xl mx-auto px-6 pb-12 flex justify-center">
+        <div className="w-full sm:w-2/3 lg:w-1/2">
+          <TeamCard {...leadershipCard} />
+        </div>
+      </section>
+
+      {/* Other cards grid */}
+      <section className="max-w-7xl mx-auto px-6 pb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {cards.map((card) => (
-            <TeamCard key={card.title} {...card}/>
+            <TeamCard key={card.title} {...card} />
           ))}
         </div>
-      </div>
-  </div>;
+      </section>
+    </main>
+  );
 };
 
 export default TeamsPage;

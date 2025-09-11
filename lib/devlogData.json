@@ -1,0 +1,92 @@
+{
+    "Model": [
+      {
+          "title": "placeholder",
+          "team": "Model",
+          "description": "placeholder",
+          "videoUrl": "placeholder"
+      },
+      {
+        "title": "placeholder",
+        "team": "Model",
+        "description": "placeholder",
+        "videoUrl": "placeholder"
+      }
+    ],
+    "Pathing": [
+      {
+          "title": "placeholder",
+          "team": "Pathing",
+          "description": "placeholder",
+          "videoUrl": "placeholder"
+      },
+      {
+        "title": "placeholder",
+        "team": "Pathing",
+        "description": "placeholder",
+        "videoUrl": "placeholder"
+      }
+    ],
+    "Embedded": [
+      {
+          "title": "placeholder",
+          "team": "Embedded",
+          "description": "placeholder",
+          "videoUrl": "placeholder"
+      },
+      {
+        "title": "placeholder",
+        "team": "Embedded",
+        "description": "placeholder",
+        "videoUrl": "placeholder"
+      }
+    ],
+    "Hardware": [
+      {
+          "title": "Vehicle 3D Model Finalization",
+          "team": "Hardware",
+          "description": "A finalized model has been completed and initial mounts have been tested",
+          "videoUrl": "https://drive.google.com/file/d/14jv0jqzfFuMrbcAsbv_VPr7z2JF4YopB/view?usp=sharing"
+      },
+      {
+          "title": "Electrical and PCB Finalized",
+          "team": "Hardware",
+          "description": "A finalized electrical diagram was completed and the main power distribution PCB was completed and sent to be ordered",
+          "videoUrl": "https://drive.google.com/file/d/1K3ClG6DyZVYtJimcV74_t654ui1dB2TS/view?usp=sharing"
+      },
+      {
+        "title": "Final Theoretical Performance Evaluation",
+        "team": "Hardware",
+        "description": "A final theoretical performance evaluation has been completed to verify the vehicle will meet its performance requirements",
+        "videoUrl": "https://drive.google.com/file/d/1A3-hyBzQPgvZcKioY3no4B-EX0BgPia5/view?usp=sharing"
+      }
+    ],
+    "Simulation": [
+      {
+          "title": "placeholder",
+          "team": "Simulation",
+          "description": "placeholder",
+          "videoUrl": "placeholder"
+      },
+      {
+        "title": "placeholder",
+        "team": "Simulation",
+        "description": "placeholder",
+        "videoUrl": "placeholder"
+      }
+    ],
+    "Website": [
+      {
+          "title": "placeholder",
+          "team": "Website",
+          "description": "placeholder",
+          "videoUrl": "placeholder"
+      },
+      {
+        "title": "placeholder",
+        "team": "Website",
+        "description": "placeholder",
+        "videoUrl": "placeholder"
+      }
+    ]
+  }

@@ -44,6 +44,9 @@ const NavBarLink = ({ label, href, isNewWindow }: Props) => {
             className="z-9999"
           >
             <DropdownMenuItem asChild>
+              <Link href="/teams/leadership">Leadership</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href="/teams/embedded">Embedded</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
@@ -54,9 +57,6 @@ const NavBarLink = ({ label, href, isNewWindow }: Props) => {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/teams/model">Model</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/teams/leadership">Leadership</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/teams/simulation">Simulation</Link>

@@ -126,3 +126,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+[data-slider] {
+  display: flex;
+}
+
+[data-slider] > * {
+  flex-shrink: 0;
+  width: 25vw;
+}

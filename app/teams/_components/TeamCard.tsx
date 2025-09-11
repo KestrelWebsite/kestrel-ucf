@@ -1,42 +1,40 @@
+import React from "react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import{
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
 
-export interface TeamCardProps{
-    title: string;
-    description: string;
-    image: StaticImageData;
-    link: string;
+export interface TeamCardProps {
+  title: string;
+  description: string;
+  image: StaticImageData;
+  link: string;
 }
 
-const TeamCard = ({ title, description, image, link}: TeamCardProps) => {
-    return(
-        <Card className = "w-full max-w-xs bg-slate-600 border-slate-700 hover:scale-102 hover:shadow-xl transition-transform">
-            <CardHeader>
-                <Image
-                    className = "rounded-lg mb-4 shadow-md transition-all duration-300"
-                    src = {image}
-                    alt = {title}
-                />
-                <CardTitle className = "text-2xl text-white">{title}</CardTitle>
-                <CardDescription className = "overflow-y-auto max-h-[300px] text-white/50">
-                    {description}
-                </CardDescription>
-            </CardHeader>
-            <CardFooter>
-                <Link href = {link} className = "text-blue-300 hover:underline text-sm">
-                    Learn More
-                </Link>
-            </CardFooter>
-        </Card>
-    );
+const TeamCard: React.FC<TeamCardProps> = ({ title, description, image, link }) => {
+  return (
+    <Link href={link}>
+      <div className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+        
+        {/* Image */}
+        <div className="h-30 w-full overflow-hidden">
+          <Image
+            src={image}
+            alt={title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+
+        {/* Text content */}
+        <div className="p-6">
+          <h3 className="text-xl font-semibold text-white group-hover:text-blue-400 transition">
+            {title}
+          </h3>
+          <p className="mt-2 text-gray-300 text-sm group-hover:text-gray-200 transition">
+            {description}
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
 };
 
 export default TeamCard;
