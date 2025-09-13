@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Props {
   label: string;
@@ -62,22 +64,37 @@ const NavBarLink = ({ label, href, isNewWindow }: Props) => {
     );
   }
 
-  // Use shadcn dropdown for "Contributors"
-  if (label.toLowerCase() === "contributions"){
+    // Use shadcn dropdown for "Contributors"
+  if (label.toLowerCase() === "contributions") {
+    const [open, setOpen] = useState(false);
+    const router = useRouter();
     return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          {/* Clicking this now goes to /contributions */}
+      <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
+        {/* Hover opens/closes menu; click navigates */}
+        <DropdownMenuTrigger
+          asChild
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+        >
           <Link
             href="/contributions"
             className={baseClasses + activeClass}
+            onClick={(e) => {
+              // ensure we navigate and don't leave the menu stuck open
+              setOpen(false);
+              // let Next.js handle the link normally (no preventDefault)
+            }}
           >
             {label}
           </Link>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent
-          align="start" // adjust alignment as needed
-          className="z-9999"
+          align="start"
+          className="z-[9999]"
+          // keep the menu open while the user moves into it
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
         >
           <DropdownMenuItem asChild>
             <Link href="/contributions/BlueOrigin">Blue Origin</Link>
@@ -86,7 +103,7 @@ const NavBarLink = ({ label, href, isNewWindow }: Props) => {
             <Link href="/contributions/ACM">ACM</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/contributions/AI@UCF">AI@UCF</Link>
+            <Link href="/contributions/ai-ucf">AI@UCF</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/contributions/IEEE">IEEE</Link>
