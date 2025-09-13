@@ -5,6 +5,7 @@ const links: { label: string; href: string; isNewWindow?: boolean }[] = [
   { label: "About", href: "/about" },
   { label: "DevLogs", href: "/devlogs" },
   { label: "Teams", href: "/teams" },
+  { label: "Contributions", href: "/contributions" },
   {
     label: "Github",
     href: "https://github.com/Autonomous-droneProject/Main",
