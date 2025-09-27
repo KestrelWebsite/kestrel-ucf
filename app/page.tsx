@@ -7,49 +7,61 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Environment, useGLTF, Stars } from '@react-three/drei';
 import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import * as THREE from 'three';
-import SmoothSlider from "@/components/ui/SmoothSlider";
 import Contributors from "@/components/ui/Contributors";
 
+// ✅ Lucide icons
+import {
+  Users,
+  Cpu,
+  Map,
+  Wrench,
+  Box,
+  Monitor,
+  Globe,
+} from "lucide-react";
 
 // ✅ Floating drone fixed in viewport (toned down + always visible)
 function FloatingDrone({ scrollYProgress }: { scrollYProgress: any }) {
   const { scene } = useGLTF('/InteractiveKesterelView.glb');
   const ref = useRef<THREE.Group>(null);
 
-  // Y rotation: full spin as you scroll
-  const rotationY = useTransform(scrollYProgress, [0, 1], [0, Math.PI * 2]);
-
-  // X rotation: tilt forward (showing top) midway, then return upright
-  const rotationX = useTransform(
-    scrollYProgress,
-    [0, 0.5, 1],    // keyframes
-    [0, -0.5, 0]    // tilt ~-30° then return to 0
-  );
-
-  // Z rotation: small wobble effect, but return to 0 at the end
-  const rotationZ = useTransform(
+  // --- Y Rotation ---
+  const rotationY = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    [0, 0.2, 0]
+    [0, Math.PI * 2, Math.PI] // full spin → end backward
   );
 
-  // Camera zoom: starts farther out, zooms in, then eases back
-  const zoom = useTransform(scrollYProgress, [0, 1], [12, 8.5]);
+  // --- X Rotation (top view tilt) ---
+  const rotationX = useTransform(
+    scrollYProgress,
+    [0.5, 0.8, 1],
+    [0, Math.PI / 2, 0] // tilt back to top → return upright
+  );
+
+  // --- Keep Z Rotation locked ---
+  const rotationZ = useTransform(scrollYProgress, [0, 1], [0, 0]);
+
+  // --- Smooth zoom in when showing top ---
+  const zoom = useTransform(scrollYProgress, [0, 0.5, 0.8, 1], [8, 15, 9, 8]);
+
+  // --- Vertical shift to stay centered while tilting ---
+  const verticalShift = useTransform(scrollYProgress, [0.5, 0.8], [0, 0.8]); 
+  // moves drone slightly UP when tilting to top
 
   useFrame((state) => {
     const g = ref.current;
     if (g) {
-      // Slight scale reduction so it always fits
       g.scale.set(0.27, 0.27, 0.27);
 
       // Apply rotations
       g.rotation.set(rotationX.get(), rotationY.get(), rotationZ.get());
 
-      // Gentle bounce
-      g.position.y = Math.sin(state.clock.elapsedTime) * 0.2 - 1.8;
+      // Apply vertical shift for top view centering
+      g.position.y = verticalShift.get() - 1.8;
     }
 
-    // Smooth camera zoom
+    // Smooth zoom effect
     state.camera.position.z = zoom.get();
   });
 
@@ -59,6 +71,7 @@ function FloatingDrone({ scrollYProgress }: { scrollYProgress: any }) {
     </group>
   );
 }
+
 
 
 
@@ -84,8 +97,8 @@ export default function HomePage() {
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Canvas
           camera={{ position: [0, 0, 10], fov: 45 }}
-          gl={{ alpha: true }}                        
-          style={{ background: 'transparent' }}       
+          gl={{ alpha: true }}
+          style={{ background: 'transparent' }}
         >
           <Stars radius={100} depth={500} count={1000} factor={4} fade speed={1} />
           <ambientLight intensity={0.8} />
@@ -124,10 +137,67 @@ export default function HomePage() {
         </section>
 
         {/* Teams */}
-        <section className="w-full overflow-hidden py-12">
-          <h1 className="text-4xl font-bold text-center mb-8">Our Teams</h1>
-          <SmoothSlider />
-        </section>
+<section className="relative w-full py-20 bg-transparent">
+  <h1 className="text-4xl font-bold text-center mb-12">Our Teams</h1>
+
+  <div className="flex justify-between items-start w-full px-6">
+    {/* Left Column */}
+    <div className="flex flex-col gap-10 ml-8">
+      {[
+        { name: "Embedded", icon: Cpu },
+        { name: "Hardware", icon: Wrench },
+        { name: "Website", icon: Globe },
+      ].map((team, idx) => {
+        const Icon = team.icon;
+        return (
+          <div
+            key={idx}
+            className="w-60 group bg-black/40 border border-white/20 backdrop-blur-lg 
+                       rounded-xl shadow-lg p-6 flex flex-col items-center text-center 
+                       hover:scale-105 hover:border-white/40 transition-transform"
+          >
+            {/* Icon */}
+            <Icon className="w-12 h-12 mb-4 text-gray-300 group-hover:text-blue-400 transition" />
+
+            {/* Name */}
+            <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition">
+              {team.name}
+            </h3>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* Right Column */}
+    <div className="flex flex-col gap-10 mr-8">
+      {[
+        { name: "Pathing", icon: Map },
+        { name: "Model", icon: Box },
+        { name: "Simulation", icon: Monitor },
+      ].map((team, idx) => {
+        const Icon = team.icon;
+        return (
+          <div
+            key={idx}
+            className="w-60 group bg-black/40 border border-white/20 backdrop-blur-lg 
+                       rounded-xl shadow-lg p-6 flex flex-col items-center text-center 
+                       hover:scale-105 hover:border-white/40 transition-transform"
+          >
+            {/* Icon */}
+            <Icon className="w-12 h-12 mb-4 text-gray-300 group-hover:text-blue-400 transition" />
+
+            {/* Name */}
+            <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition">
+              {team.name}
+            </h3>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+
 
         {/* Contributors */}
         <Contributors />
