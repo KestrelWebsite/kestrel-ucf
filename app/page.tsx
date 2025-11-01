@@ -1,60 +1,76 @@
 'use client';
 
-import { useEffect, useRef, Suspense } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import Lenis from '@studio-freight/lenis';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, useGLTF, Stars } from '@react-three/drei';
-import { Bloom, EffectComposer } from '@react-three/postprocessing';
+import { Environment, useGLTF, Stars } from '@react-three/drei';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
-import Contributors from "@/components/ui/Contributors";
+import Contributors from '@/components/ui/Contributors';
+import { Cpu, Map, Wrench, Box, Monitor, Globe } from 'lucide-react';
 
-// ✅ Lucide icons
-import {
-  Cpu,
-  Map,
-  Wrench,
-  Box,
-  Monitor,
-  Globe,
-} from "lucide-react";
+/* ----------------------------- Drone Component ---------------------------- */
 
-// ✅ Floating drone with cinematic side movement
 function FloatingDrone({ scrollYProgress }: { scrollYProgress: any }) {
-  const { scene } = useGLTF("/InteractiveKesterelView.glb");
+  const { scene } = useGLTF('/InteractiveKesterelView.glb');
   const ref = useRef<THREE.Group>(null);
 
-  // --- Rotations (unchanged) ---
-  const rotationY = useTransform(scrollYProgress, [0, 0.5, 1], [0, Math.PI * 2, Math.PI]);
-  const rotationX = useTransform(scrollYProgress, [0.5, 0.8, 1], [0, Math.PI / 2, 0]);
-  const rotationZ = useTransform(scrollYProgress, [0, 1], [0, 0]);
-
-  // --- Smart zoom (unchanged) ---
-  const baseZoom = useTransform(scrollYProgress, [0, 0.5, 0.8, 1], [8, 13, 9, 10]);
-  const zoomAdjust = useTransform(scrollYProgress, [0, 0.25, 0.5, 0.75, 1], [0, 0.7, 0, 0.7, 0]);
-  const zoom = useTransform([baseZoom, zoomAdjust], ([b, a]) => (b as number) + (a as number));
-
-  // --- Vertical position (unchanged) ---
-  const verticalShift = useTransform(scrollYProgress, [0, 0.5, 0.8, 1], [-1.7, -0.9, -0.5, -1.3]);
-
-  // --- Horizontal motion ---
-  // Left drift for "Innovation Through Teamwork" (0.45–0.55)
-  // Then smooth right drift for "Our Teams" (0.55–0.7)
-  const horizontalShift = useTransform(
+  // === ROTATION ===
+  const rotY = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.45, 0.55, 0.7, 0.85, 1],
-    [0, 3.5, -3.8, -3.8, 1, 3.2, 0] // right drift added for "Our Teams"
+    [0, 0.35, 0.55, 0.65, 0.72, 0.8, 1],
+    [0, Math.PI * 1.2, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 2.2]
   );
 
-  useFrame((state) => {
+  const rotX = useTransform(
+    scrollYProgress,
+    [0, 0.5, 0.55, 0.65, 0.72, 0.8, 1],
+    [0, 0.25 * Math.PI, 0.4 * Math.PI, 0.9 * Math.PI, 0.9 * Math.PI, 0.1 * Math.PI, 0.1 * Math.PI]
+  );
+
+  const rotZ = useTransform(scrollYProgress, [0, 1], [0, 0.03 * Math.PI]);
+
+  // === POSITION (horizontal & vertical) ===
+  // Keep original movement until Innovation, then bring drone to center
+  const posX = useTransform(
+    scrollYProgress,
+    [0, 0.18, 0.25, 0.35, 0.45, 0.55, 0.65, 1],
+    [0, 3.6, 0, -3.6, -2.9, 0, 0, 0]
+  );
+
+  const posY = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.55, 0.65, 0.72, 0.8, 1],
+    [-2.0, -1.2, -1.0, 0, 0.2, 0, -1.8]
+  );
+
+  // === CAMERA ZOOM ===
+// start zooming in earlier (after Innovation ~0.58) and peak sooner (~0.70)
+const baseZoom = useTransform(
+  scrollYProgress,
+  [0, 0.18, 0.25, 0.35, 0.45, 0.5, 0.55, 0.58, 0.65, 1],
+  [9, 11, 11.5, 12, 12, 8, 2, 9, 9, 9]
+);
+
+
+  const zoomZ = useTransform(baseZoom, (b) => b);
+
+  // === LOOP FRAME (animation) ===
+  let t = 0;
+  useFrame((state, delta) => {
+    t += delta;
     const g = ref.current;
-    if (g) {
-      const scale = 0.27 + 0.01 * Math.cos(scrollYProgress.get() * Math.PI * 2);
-      g.scale.set(scale, scale, scale);
-      g.rotation.set(rotationX.get(), rotationY.get(), rotationZ.get());
-      g.position.set(horizontalShift.get(), verticalShift.get(), 0);
-    }
-    state.camera.position.z = zoom.get();
+    if (!g) return;
+
+    const s = 0.27 + 0.006 * Math.cos(t * 1.2);
+    g.scale.setScalar(s);
+    g.rotation.set(rotX.get(), rotY.get(), rotZ.get());
+    g.position.set(posX.get(), posY.get(), 0);
+
+    const targetZ = zoomZ.get();
+    state.camera.position.z += (targetZ - state.camera.position.z) * 0.08;
+    state.camera.lookAt(0, 0, 0);
   });
 
   return (
@@ -64,11 +80,72 @@ function FloatingDrone({ scrollYProgress }: { scrollYProgress: any }) {
   );
 }
 
+/* ----------------------------- Overlays (UI) ------------------------------ */
 
+function TopLeftStats() {
+  const [fps, setFps] = useState(60);
+  const [w, setW] = useState<number | null>(null);
+  const [h, setH] = useState<number | null>(null);
+
+  useEffect(() => {
+    let last = performance.now();
+    let frames = 0;
+    let raf = 0;
+    const loop = () => {
+      const now = performance.now();
+      frames++;
+      if (now - last >= 1000) {
+        setFps(frames);
+        frames = 0;
+        last = now;
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+
+    const onResize = () => {
+      setW(window.innerWidth);
+      setH(window.innerHeight);
+    };
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
+  return (
+    <div className="pointer-events-none fixed left-4 top-4 z-[60] text-xs text-white/70">
+      <div>{fps}fps</div>
+      {w && h ? <div>{w}×{h}</div> : null}
+    </div>
+  );
+}
+
+function BottomProgress({ progress }: { progress: number }) {
+  return (
+    <div className="fixed inset-x-0 bottom-6 z-[60] flex justify-center">
+      <div className="relative h-[2px] w-[70vw] bg-white/10">
+        <div
+          className="absolute left-0 top-0 h-[2px] bg-white/70"
+          style={{ width: `${Math.max(0, Math.min(100, progress * 100))}%` }}
+        />
+        <div className="absolute inset-0 flex justify-between opacity-30">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <div key={i} className="h-[6px] w-[1px] bg-white/50 translate-y-[-2px]" />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* --------------------------------- Page ---------------------------------- */
 
 export default function HomePage() {
   useEffect(() => {
-    const lenis = new Lenis();
+    const lenis = new Lenis({ smoothWheel: true, lerp: 0.12 });
     const raf = (time: number) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -76,21 +153,19 @@ export default function HomePage() {
     requestAnimationFrame(raf);
   }, []);
 
-  const scrollContainerRef = useRef(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: scrollContainerRef,
-    offset: ['start start', 'end end']
+    offset: ['start start', 'end end'],
   });
+
+  const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <main ref={scrollContainerRef} className="relative w-full bg-black text-white overflow-x-hidden">
-      {/* ✅ Fixed drone canvas */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <Canvas
-          camera={{ position: [0, 0, 10], fov: 45 }}
-          gl={{ alpha: true }}
-          style={{ background: 'transparent' }}
-        >
+      {/* Canvas (drone) */}
+      <div className="fixed inset-0 z-[5] pointer-events-none">
+        <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ alpha: true }}>
           <Stars radius={100} depth={500} count={1000} factor={4} fade speed={1} />
           <ambientLight intensity={0.8} />
           <directionalLight position={[10, 10, 5]} intensity={1.2} />
@@ -98,271 +173,219 @@ export default function HomePage() {
             <FloatingDrone scrollYProgress={scrollYProgress} />
             <Environment preset="sunset" />
             <EffectComposer>
-              <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} height={300} />
+              <Bloom luminanceThreshold={0.18} luminanceSmoothing={0.9} height={300} />
             </EffectComposer>
           </Suspense>
-          <OrbitControls makeDefault target={[0, 0, 0]} enableZoom={false} enableRotate={false} />
         </Canvas>
       </div>
 
-      {/* ✅ Content sections scroll over drone */}
-      <div className="relative z-10 space-y-32">
-        {/* Hero */}
-        <section className="h-screen flex flex-col items-center justify-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2 }}
-            className="text-5xl md:text-6xl font-bold text-center"
+      <TopLeftStats />
+      <motion.div style={{ opacity: progress }}>
+        <BottomProgress progress={(progress as unknown as number) ?? 0} />
+      </motion.div>
+
+      {/* MAIN CONTENT */}
+      <div className="relative z-10">
+
+        {/* HERO SECTION */}
+        <section className="relative h-[100vh] flex flex-col items-center justify-start pt-[7vh]">
+          <h1
+            className="
+              select-none text-[15vw] md:text-[12vw] leading-none font-extrabold tracking-tight
+              text-white/90 text-center font-sans
+            "
+            style={{
+              fontFamily:
+                '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif',
+              letterSpacing: '-0.04em',
+            }}
           >
-            Kestrel UCF
-          </motion.h1>
+            KESTREL&nbsp;
+          </h1>
+
           <motion.p
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.8, delay: 0.5 }}
-            className="text-gray-300 text-lg mt-4 max-w-xl text-center"
+            transition={{ duration: 1.2, delay: 0.2 }}
+            className="mt-6 text-center text-white/70 text-base md:text-lg tracking-wide"
           >
             Scroll to reveal more.
           </motion.p>
         </section>
 
-        {/* Section 1: Drone moves right, text on left */}
-        <section id="about" className="h-screen flex items-center justify-start px-20">
+        {/* ABOUT SECTION */}
+        <section id="about" className="relative flex items-center z-[10] py-75">
           <motion.div
-            initial={{ opacity: 0, x: -100 }}
+            initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="max-w-lg text-left"
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.4 }}
+            className="max-w-xl ml-[8vw]"
           >
-            <h2 className="text-4xl font-semibold mb-6">A Student-Built Drone System</h2>
+            <h2 className="text-5xl font-semibold mb-6">A Student-Built Drone System</h2>
             <p className="text-lg text-gray-300 leading-relaxed">
-              Kestrel is an autonomous videography drone initiative developed by
-              student teams within several student ran clubs at UCF. Kestrel&apos;s
-              focus is on pushing the boundaries of aerial robotics while integrating
-              the intelligence of modern day computing systems. The project combines
-              expertise from both hardware and software disciplines to design, build,
-              and program drones capable of intelligent flight. Whether it&apos;s
-              object detection, pathfinding, or dynamic control, Kestrel aims to
-              provide a comprehensive platform for learning, research, and innovation
-              in autonomous systems.
+              Kestrel is an autonomous videography drone initiative developed by student teams within several student ran
+              clubs at UCF. Kestrel&apos;s focus is on pushing the boundaries of aerial robotics while integrating the intelligence
+              of modern day computing systems.
             </p>
           </motion.div>
         </section>
 
-        {/* Section 2: Drone moves left, text on right */}
-        <section className="h-screen flex items-center justify-end px-20">
+        {/* INNOVATION SECTION */}
+        <section className="relative flex items-center z-[10] py-75">
           <motion.div
-            initial={{ opacity: 0, x: 100 }}
+            initial={{ opacity: 0, x: 80 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="max-w-lg text-right"
+            transition={{ duration: 0.9, ease: 'easeOut' }}
+            viewport={{ once: true, amount: 0.4 }}
+            className="max-w-xl mr-[8vw] ml-auto text-right"
           >
-            <h2 className="text-4xl font-semibold mb-6">Innovation Through Teamwork</h2>
+            <h2 className="text-5xl font-semibold mb-6">Innovation Through Teamwork</h2>
             <p className="text-lg text-gray-300 leading-relaxed">
-              Each Kestrel subteam focuses on specialized goals—hardware engineering,
-              embedded systems, autonomous pathing, simulation, and web visualization.
-              Together, they bring life to a drone that embodies both creativity and
-              precision, demonstrating the power of collaborative learning.
+              Each Kestrel subteam focuses on specialized goals—hardware engineering, embedded systems, autonomous pathing,
+              simulation, and web visualization.
             </p>
           </motion.div>
         </section>
 
-        {/* ✅ Contributors (moved here) */}
-        <section id="contributors">
+        {/* CINEMATIC BLACK VACUUM + CONTRIBUTORS TRANSITION */}
+        <motion.div
+          style={{
+            opacity: useTransform(scrollYProgress, [0.45, 0.5, 0.55, 0.58, 0.65, 1], [0, 0.2, 1, 0.5, 0, 0]),
+          }}
+          className="fixed inset-0 bg-black z-[15] pointer-events-none"
+        />
+
+        <section
+          id="contributors"
+          className="relative z-[20] h-[100vh] flex flex-col items-center justify-center text-white"
+        >
+          <h1 className="text-5xl font-bold mb-10">Our Contributors</h1>
           <Contributors />
         </section>
 
-        {/* Teams */}
-        <section id="teams" className="relative w-full py-20 bg-transparent">
-          <h1 className="text-4xl font-bold text-center mb-12">Our Teams</h1>
-
+        {/* TEAMS */}
+        <section id="teams" className="relative w-full z-[10] py-75">
+          <h1 className="text-5xl font-bold text-center mb-14">Our Teams</h1>
           <div className="flex justify-between items-start w-full px-6">
-            {/* Left Column */}
-            <div className="flex flex-col gap-10 ml-8">
-              {[
-                { name: "Embedded", icon: Cpu },
-                { name: "Hardware", icon: Wrench },
-                { name: "Website", icon: Globe },
-              ].map((team, idx) => {
-                const Icon = team.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="w-60 group bg-black/40 border border-white/20 backdrop-blur-lg 
-                               rounded-xl shadow-lg p-6 flex flex-col items-center text-center 
-                               hover:scale-105 hover:border-white/40 transition-transform"
-                  >
-                    <Icon className="w-12 h-12 mb-4 text-gray-300 group-hover:text-blue-400 transition" />
-                    <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition">
-                      {team.name}
-                    </h3>
-                  </div>
-                );
-              })}
+            <div className="flex flex-col gap-10 ml-[6vw]">
+              {[{ name: 'Embedded', icon: Cpu }, { name: 'Hardware', icon: Wrench }, { name: 'Website', icon: Globe }].map(
+                (team, idx) => {
+                  const Icon = team.icon;
+                  return (
+                    <div
+                      key={idx}
+                      className="w-60 group bg-black/40 border border-white/20 backdrop-blur-lg rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:scale-105 hover:border-white/40 transition-transform"
+                    >
+                      <Icon className="w-12 h-12 mb-4 text-gray-300 group-hover:text-blue-400 transition" />
+                      <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition">
+                        {team.name}
+                      </h3>
+                    </div>
+                  );
+                }
+              )}
             </div>
 
-            {/* Right Column */}
-            <div className="flex flex-col gap-10 mr-8">
-              {[
-                { name: "Pathing", icon: Map },
-                { name: "Model", icon: Box },
-                { name: "Simulation", icon: Monitor },
-              ].map((team, idx) => {
-                const Icon = team.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="w-60 group bg-black/40 border border-white/20 backdrop-blur-lg 
-                               rounded-xl shadow-lg p-6 flex flex-col items-center text-center 
-                               hover:scale-105 hover:border-white/40 transition-transform"
-                  >
-                    <Icon className="w-12 h-12 mb-4 text-gray-300 group-hover:text-blue-400 transition" />
-                    <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition">
-                      {team.name}
-                    </h3>
-                  </div>
-                );
-              })}
+            <div className="flex flex-col gap-10 mr-[6vw]">
+              {[{ name: 'Pathing', icon: Map }, { name: 'Model', icon: Box }, { name: 'Simulation', icon: Monitor }].map(
+                (team, idx) => {
+                  const Icon = team.icon;
+                  return (
+                    <div
+                      key={idx}
+                      className="w-60 group bg-black/40 border border-white/20 backdrop-blur-lg rounded-xl shadow-lg p-6 flex flex-col items-center text-center hover:scale-105 hover:border-white/40 transition-transform"
+                    >
+                      <Icon className="w-12 h-12 mb-4 text-gray-300 group-hover:text-blue-400 transition" />
+                      <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition">
+                        {team.name}
+                      </h3>
+                    </div>
+                  );
+                }
+              )}
             </div>
           </div>
         </section>
 
-        {/* Journey */}
-        <section id="journey" className="h-screen flex flex-col items-center justify-center text-center">
+        {/* JOURNEY */}
+        <section id="journey" className="flex flex-col items-center justify-center text-center z-[10] py-75">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, scale: 0.98, y: 12 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.9 }}
+            viewport={{ once: true, amount: 0.4 }}
             className="max-w-4xl"
           >
-            <h2 className="text-4xl font-semibold mb-6">Explore Our Journey</h2>
+            <h2 className="text-5xl font-semibold mb-6">Explore Our Journey</h2>
             <p className="text-lg text-gray-300 mb-4">
               Learn about our development process, challenges, and achievements...
             </p>
             <div className="space-x-6 mt-4">
-              <a href="/devlogs" className="underline text-white hover:text-gray-300">Read Devlogs</a>
-              <a href="/teams" className="underline text-white hover:text-gray-300">Meet the Teams</a>
+              <a href="/devlogs" className="underline text-white hover:text-gray-300">
+                Read Devlogs
+              </a>
+              <a href="/teams" className="underline text-white hover:text-gray-300">
+                Meet the Teams
+              </a>
             </div>
           </motion.div>
         </section>
-
-                        {/* ✅ Futuristic Transparent Footer */}
-<footer className="relative border-t border-white/10 bg-black/40 backdrop-blur-xl text-gray-300 py-10 overflow-hidden">
-  {/* Animated Glow Background */}
-  <div className="absolute inset-0">
-    <div className="absolute inset-0 bg-gradient-radial from-blue-500/30 via-transparent to-transparent blur-3xl animate-pulse-slow" />
-    <div className="absolute -bottom-20 left-1/2 w-[600px] h-[400px] -translate-x-1/2 bg-blue-400/10 rounded-full blur-[160px]" />
-  </div>
-
-  {/* --- Grid Columns --- */}
-  <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 relative z-10">
-    {/* Column 1 */}
-    <div>
-  <h4 className="text-white font-semibold mb-4">About</h4>
-  <ul className="space-y-2 text-sm">
-    <li>
-      <a href="/#about" className="hover:text-white">
-        About Project
-      </a>
-    </li>
-    <li>
-      <a href="/#contributors" className="hover:text-white">
-        Contributors
-      </a>
-    </li>
-    <li>
-      <a href="/#teams" className="hover:text-white">
-        Teams
-      </a>
-    </li>
-    <li>
-      <a href="/#journey" className="hover:text-white">
-        More
-      </a>
-    </li>
-  </ul>
-</div>
-
-
-    {/* Column 2 */}
-    <div>
-  <h4 className="text-white font-semibold mb-4">Teams</h4>
-  <ul className="space-y-2 text-sm">
-    <li><a href="/teams/hardware" className="hover:text-white">Hardware</a></li>
-    <li><a href="/teams/embedded" className="hover:text-white">Embedded</a></li>
-    <li><a href="/teams/simulation" className="hover:text-white">Simulation</a></li>
-    <li><a href="/teams/pathing" className="hover:text-white">Pathing</a></li>
-    <li><a href="/teams/model" className="hover:text-white">Modeling</a></li>
-    <li><a href="/teams/website" className="hover:text-white">Website</a></li>
-    <li><a href="/teams/aerostructures" className="hover:text-white">Aerostructures</a></li>
-  </ul>
-</div>
-
-
-    {/* Column 3 */}
-    <div>
-  <h4 className="text-white font-semibold mb-4">Media</h4>
-  <ul className="space-y-2 text-sm">
-    <li>
-      <a
-        href="https://www.youtube.com/@ProjectKestrel"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-white"
-      >
-        YouTube
-      </a>
-    </li>
-    <li>
-      <a
-        href="https://github.com/Autonomous-droneProject/Kestrel"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-white"
-      >
-        GitHub
-      </a>
-    </li>
-  </ul>
-</div>
-
-
-    {/* Column 4 */}
-    <div>
-  <h4 className="text-white font-semibold mb-4">Resources</h4>
-  <ul className="space-y-2 text-sm">
-    <li>
-      <a href="/devlogs" className="hover:text-white">
-        Devlogs
-      </a>
-    </li>
-    <li>
-      <a
-        href="mailto:teamlead@example.com"
-        className="hover:text-white"
-      >
-        Contact
-      </a>
-    </li>
-  </ul>
-</div>
-
-  </div>
-
-  {/* Credits */}
-  <p className="text-center text-gray-500 text-sm mt-10 relative z-10">
-    Developed by students at the University of Central Florida — In collaboration with Blue Origin and affiliated UCF clubs. <br />
-    © 2025 Kestrel UCF. All rights reserved.
-  </p>
-</footer>
-
-
-
       </div>
+
+      {/* --------------------- Footer (UNTOUCHED) --------------------- */}
+      <footer className="relative border-t border-white/10 bg-black/40 backdrop-blur-xl text-gray-300 py-10 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-radial from-blue-500/30 via-transparent to-transparent blur-3xl animate-pulse-slow" />
+          <div className="absolute -bottom-20 left-1/2 w-[600px] h-[400px] -translate-x-1/2 bg-blue-400/10 rounded-full blur-[160px]" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 relative z-10">
+          <div>
+            <h4 className="text-white font-semibold mb-4">About</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="/#about" className="hover:text-white">About Project</a></li>
+              <li><a href="/#contributors" className="hover:text-white">Contributors</a></li>
+              <li><a href="/#teams" className="hover:text-white">Teams</a></li>
+              <li><a href="/#journey" className="hover:text-white">More</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-semibold mb-4">Teams</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="/teams/hardware" className="hover:text-white">Hardware</a></li>
+              <li><a href="/teams/embedded" className="hover:text-white">Embedded</a></li>
+              <li><a href="/teams/simulation" className="hover:text-white">Simulation</a></li>
+              <li><a href="/teams/pathing" className="hover:text-white">Pathing</a></li>
+              <li><a href="/teams/model" className="hover:text-white">Modeling</a></li>
+              <li><a href="/teams/website" className="hover:text-white">Website</a></li>
+              <li><a href="/teams/aerostructures" className="hover:text-white">Aerostructures</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-semibold mb-4">Media</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="https://www.youtube.com/@ProjectKestrel" target="_blank" rel="noopener noreferrer" className="hover:text-white">YouTube</a></li>
+              <li><a href="https://github.com/Autonomous-droneProject/Kestrel" target="_blank" rel="noopener noreferrer" className="hover:text-white">GitHub</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-semibold mb-4">Resources</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="/devlogs" className="hover:text-white">Devlogs</a></li>
+              <li><a href="mailto:teamlead@example.com" className="hover:text-white">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <p className="text-center text-gray-500 text-sm mt-10 relative z-10">
+          Developed by students at the University of Central Florida — In collaboration with Blue Origin and affiliated
+          UCF clubs. <br />© 2025 Kestrel UCF. All rights reserved.
+        </p>
+      </footer>
     </main>
   );
 }
