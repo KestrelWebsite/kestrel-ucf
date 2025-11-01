@@ -4,9 +4,11 @@ import Link from 'next/link';
 import NavBarLink from './NavBarLink';
 import { TEAM_KEYS, TEAM_META } from '@/lib/devlogs';
 
+// ✅ Added Showcase link in the main nav links
 const links: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'Teams', href: '/teams' },
+  { label: 'Showcase', href: '/showcase' }, // ✅ New showcase link
 ];
 
 export default function NavBar() {
@@ -23,7 +25,7 @@ export default function NavBar() {
               </li>
             ))}
 
-            {/* ✅ Devlogs dropdown — removed mr-10 */}
+            {/* ✅ Devlogs dropdown — kept same alignment */}
             <li className="relative list-none group">
               <NavBarLink label="Devlogs" href="/devlogs" />
               <div
