@@ -19,6 +19,7 @@
     "@react-three/drei": "^10.7.3",
     "@react-three/postprocessing": "^3.0.4",
     "@studio-freight/lenis": "^1.0.42",
+    "@supabase/supabase-js": "^2.58.0",
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",

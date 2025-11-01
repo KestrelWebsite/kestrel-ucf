@@ -1,4 +1,5 @@
 // app/devlogs/page.tsx
+import React from "react";
 import TeamTile from "./_components/TeamTile";
 import { TEAM_META, TEAM_KEYS } from "@/lib/devlogs";
 
@@ -19,17 +20,35 @@ export default async function DevlogsLandingPage() {
       </section>
 
       {/* Team tiles */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {TEAM_KEYS.map((teamKey) => {
+      <section className="max-w-7xl mx-auto px-6 pb-24">
+        {/* ✅ Top row - 4 cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 place-items-center mb-10">
+          {TEAM_KEYS.slice(0, 4).map((teamKey) => {
             const meta = TEAM_META[teamKey];
             return (
-              <TeamTile
-                key={teamKey}
-                title={meta.title}
-                blurb={meta.blurb}
-                href={`/devlogs/${meta.slug}`}
-              />
+              <div key={teamKey} className="w-full max-w-[320px]">
+                <TeamTile
+                  title={meta.title}
+                  blurb={meta.blurb}
+                  href={`/devlogs/${meta.slug}`}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ✅ Bottom row - 3 cards (reduced gap) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
+          {TEAM_KEYS.slice(4).map((teamKey) => {
+            const meta = TEAM_META[teamKey];
+            return (
+              <div key={teamKey} className="w-full max-w-[320px]">
+                <TeamTile
+                  title={meta.title}
+                  blurb={meta.blurb}
+                  href={`/devlogs/${meta.slug}`}
+                />
+              </div>
             );
           })}
         </div>

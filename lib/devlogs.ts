@@ -1,4 +1,3 @@
-// lib/devlogs.ts
 import devlogData from './devlogData.json';
 
 export const TEAM_KEYS = [
@@ -8,17 +7,19 @@ export const TEAM_KEYS = [
   "Hardware",
   "Simulation",
   "Website",
+  "Aerostructures", // ✅ added
 ] as const;
 
 export type TeamKey = typeof TEAM_KEYS[number];
 
 export const TEAM_META: Record<TeamKey, { slug: string; title: string; blurb: string }> = {
-  Model:      { slug: "model",      title: "Model",      blurb: "3D design, CAD, and structural layout of Kestrel." },
-  Pathing:    { slug: "pathing",    title: "Pathing",    blurb: "Trajectory planning, navigation, and mission logic." },
-  Embedded:   { slug: "embedded",   title: "Embedded",   blurb: "Onboard firmware, sensors, and low-level control." },
-  Hardware:   { slug: "hardware",   title: "Hardware",   blurb: "Airframe, propulsion, electronics integration." },
-  Simulation: { slug: "simulation", title: "Simulation", blurb: "Gazebo/ROS sim, testing scenarios, performance." },
-  Website:    { slug: "website",    title: "Website",    blurb: "This site, tooling, and internal dashboards." },
+  Model:          { slug: "model",          title: "Model",          blurb: "3D design, CAD, and structural layout of Kestrel." },
+  Pathing:        { slug: "pathing",        title: "Pathing",        blurb: "Trajectory planning, navigation, and mission logic." },
+  Embedded:       { slug: "embedded",       title: "Embedded",       blurb: "Onboard firmware, sensors, and low-level control." },
+  Hardware:       { slug: "hardware",       title: "Hardware",       blurb: "Airframe, propulsion, electronics integration." },
+  Simulation:     { slug: "simulation",     title: "Simulation",     blurb: "Gazebo/ROS sim, testing scenarios, performance." },
+  Website:        { slug: "website",        title: "Website",        blurb: "This site, tooling, and internal dashboards." },
+  Aerostructures: { slug: "aerostructures", title: "Aerostructures", blurb: "Structural design, materials, and stress analysis to ensure strength and aerodynamic efficiency." }, // ✅ added
 };
 
 // ✅ JSON-backed entries (typed)
