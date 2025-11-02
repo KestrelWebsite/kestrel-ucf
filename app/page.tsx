@@ -13,7 +13,7 @@ import { Cpu, Map, Wrench, Box, Monitor, Globe } from 'lucide-react';
 /* ----------------------------- Drone Component ---------------------------- */
 
 function FloatingDrone({ scrollYProgress }: { scrollYProgress: any }) {
-  const { scene } = useGLTF('/InteractiveKesterelView.glb');
+  const { scene } = useGLTF('https://github.com/KestrelWebsite/kestrel-ucf/releases/download/v1.0-glb-host/InteractiveKesterelView.glb');
   const ref = useRef<THREE.Group>(null);
 
   
