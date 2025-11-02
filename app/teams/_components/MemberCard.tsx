@@ -9,10 +9,10 @@ import {
 
 export interface MemberCardProps {
   name: string;
-  role: string | string[]; // allow arrays too
+  role: string | string[]; 
   major?: string;
   contribution: string;
-  image?: string; // ✅ made optional
+  image?: string; 
   links: Array<LinkProps>;
 }
 
@@ -63,7 +63,7 @@ const MemberCard = ({
         </div>
       )}
 
-      {/* ✅ Image (Optional) */}
+      {/* Image (Optional) */}
       {image && image !== "placeholder" && (
         <div className="mt-4 w-full h-40 overflow-hidden rounded-md">
           <Image

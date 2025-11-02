@@ -41,8 +41,8 @@ const TeamCard: React.FC<TeamCardProps> = ({
           transition-all duration-300 
           overflow-hidden 
           flex flex-col 
-          min-h-[420px]   /* ✅ Uniform height */
-          max-w-[320px]   /* ✅ Uniform width */
+          min-h-[420px]   /* Uniform height */
+          max-w-[300px]   /* Uniform width */
         "
       >
         {/* Image */}

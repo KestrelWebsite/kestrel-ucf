@@ -1,64 +1,60 @@
-// app/teams/page.tsx
 import React from "react";
 import placeholder from "@/public/ArduinoBoard.png";
 import TeamCard from "./_components/TeamCard";
 import { supabase } from "@/lib/supabaseClient";
 
 export default async function TeamsPage() {
-  // ✅ Fetch progress data from Supabase
   const { data: teamsData, error } = await supabase.from("teams").select("*");
 
   if (error) {
     console.error("Error fetching teams:", error.message);
   }
 
-  // ✅ Map rows by ID (so card.id matches Supabase id)
   const progressMap = (teamsData ?? []).reduce((acc, t) => {
     acc[t.id] = t;
     return acc;
   }, {} as Record<number, any>);
 
-  // ✅ Static team info (includes Aerostructures)
   const cards = [
     {
       id: 1,
       title: "Hardware",
-      description: "Airframe, propulsion, integration.",
+      description: "Propulsion systems, structural integration.",
       image: placeholder,
       link: "/teams/hardware",
     },
     {
       id: 2,
       title: "Embedded",
-      description: "Firmware, I/O, control loops.",
+      description: "Firmware, I/O, control loops, firmware, I/O .X",
       image: placeholder,
       link: "/teams/embedded",
     },
     {
       id: 3,
       title: "Model",
-      description: "3D design, CAD, rigging.",
+      description: "Algorithm optimization, motion prediction.",
       image: placeholder,
       link: "/teams/model",
     },
     {
       id: 4,
       title: "Simulation",
-      description: "Gazebo/ROS, test scenarios.",
+      description: "System integration, autonomous verification.",
       image: placeholder,
       link: "/teams/simulation",
     },
     {
       id: 5,
       title: "Pathing",
-      description: "Planning, navigation, logic.",
+      description: "Planning, navigation, logic, navigation, logic.X",
       image: placeholder,
       link: "/teams/pathing",
     },
     {
       id: 6,
       title: "Website",
-      description: "Frontend, dashboards.",
+      description: "Performance optimization, interactive design.",
       image: placeholder,
       link: "/teams/website",
     },
@@ -66,13 +62,12 @@ export default async function TeamsPage() {
       id: 7,
       title: "Aerostructures",
       description:
-        "Structural design, materials, and stress analysis to ensure strength and aerodynamic efficiency.",
+        "Structural design, aerodynamic efficiency.X",
       image: placeholder,
       link: "/teams/aerostructures",
     },
   ];
 
-  // Split into rows for layout clarity
   const topRow = cards.slice(0, 4);
   const bottomRow = cards.slice(4);
 
@@ -81,16 +76,16 @@ export default async function TeamsPage() {
       {/* Header */}
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
         <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-          Our Teams
+          Kestrel Teams
         </h1>
         <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
-          Meet the groups building Kestrel.
+        Discover the purpose, leadership, and innovations driving each Kestrel team.
         </p>
       </section>
 
       {/* Cards Section */}
       <section className="max-w-7xl mx-auto px-6 pb-24">
-        {/* --- Unified grid for consistent card width & height --- */}
+        {/* Unified grid for consistent card width & height */}
         <div
           className="
             grid 
@@ -102,7 +97,7 @@ export default async function TeamsPage() {
             place-content-center
           "
         >
-          {/* --- Top row (4 cards) --- */}
+          {/* Top row (4 cards) */}
           {topRow.map((card) => {
             const progress = progressMap[card.id] || {};
             return (
@@ -123,10 +118,10 @@ export default async function TeamsPage() {
             );
           })}
 
-          {/* --- Spacer row break (forces new line for next 3) --- */}
+          {/* Spacer row break (forces new line for next 3) */}
           <div className="col-span-full h-0" />
 
-          {/* --- Bottom row (3 centered cards) --- */}
+          {/* Bottom row (3 centered cards)*/}
           <div className="col-span-full flex justify-center gap-10 flex-wrap">
             {bottomRow.map((card) => {
               const progress = progressMap[card.id] || {};

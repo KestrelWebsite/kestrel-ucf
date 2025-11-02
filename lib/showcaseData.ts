@@ -1,4 +1,3 @@
-// lib/showcaseData.ts
 
 export interface ShowcaseEvent {
     title: string;
@@ -9,17 +8,17 @@ export interface ShowcaseEvent {
   
   export const SHOWCASE_EVENTS: ShowcaseEvent[] = [
     {
-      title: "Team Meeting",
-      date: "May 7, 2025",
-      folder: "may7",
-      images: [
-        "/showcase/may7/photo1.png",
-        "/showcase/may7/photo2.jpg",
-        "/showcase/may7/photo3.png",
-      ],
-    },
+        title: "Blue Origin Tour",
+        date: "August 10, 2025",
+        folder: "august10",
+        images: [
+          "/showcase/august10/photo1.jpg",
+          "/showcase/august10/photo2.jpg",
+          "/showcase/august10/photo3.jpg",
+        ],
+      },
     {
-      title: "Development Sprint",
+      title: "Team Meeting",
       date: "July 14, 2025",
       folder: "july14",
       images: [
@@ -29,14 +28,14 @@ export interface ShowcaseEvent {
       ],
     },
     {
-      title: "Blue Origin Tour",
-      date: "August 10, 2025",
-      folder: "august10",
-      images: [
-        "/showcase/august10/photo1.jpg",
-        "/showcase/august10/photo2.jpg",
-        "/showcase/august10/photo3.jpg",
-      ],
-    },
+        title: "Team Meeting",
+        date: "May 7, 2025",
+        folder: "may7",
+        images: [
+          "/showcase/may7/photo1.png",
+          "/showcase/may7/photo2.jpg",
+          "/showcase/may7/photo3.png",
+        ],
+      },
   ];
   

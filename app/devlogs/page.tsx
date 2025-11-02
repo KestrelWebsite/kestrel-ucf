@@ -1,4 +1,3 @@
-// app/devlogs/page.tsx
 import React from "react";
 import TeamTile from "./_components/TeamTile";
 import { TEAM_META, TEAM_KEYS } from "@/lib/devlogs";
@@ -14,15 +13,14 @@ export default async function DevlogsLandingPage() {
           Kestrel Devlogs
         </h1>
         <p className="mt-4 text-lg text-gray-300 max-w-3xl mx-auto">
-          Explore progress and milestones from each team contributing to Kestrel at UCF.
-          Choose a team below to dive into its development updates.
+          Explore progress and milestones from each team contributing to Kestrel.
         </p>
       </section>
 
       {/* Team tiles */}
       <section className="max-w-7xl mx-auto px-6 pb-24">
-        {/* ✅ Top row - 4 cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 place-items-center mb-10">
+        {/* Top row - 4 cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 place-items-center mb-10">
           {TEAM_KEYS.slice(0, 4).map((teamKey) => {
             const meta = TEAM_META[teamKey];
             return (
@@ -37,12 +35,12 @@ export default async function DevlogsLandingPage() {
           })}
         </div>
 
-        {/* ✅ Bottom row - 3 cards (reduced gap) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
+        {/* Bottom row - centered manually */}
+        <div className="flex justify-center gap-6 flex-wrap">
           {TEAM_KEYS.slice(4).map((teamKey) => {
             const meta = TEAM_META[teamKey];
             return (
-              <div key={teamKey} className="w-full max-w-[320px]">
+              <div key={teamKey} className="max-w-[320px]">
                 <TeamTile
                   title={meta.title}
                   blurb={meta.blurb}

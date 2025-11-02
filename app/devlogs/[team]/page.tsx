@@ -8,7 +8,7 @@ import { TEAM_META, teamFromSlug } from "@/lib/devlogs";
 
 type PageProps = { params: Promise<{ team: string }> };
 
-// ✅ Map lowercase slugs → numeric IDs in your Supabase table
+
 const TEAM_ID_MAP: Record<string, number> = {
   hardware: 1,
   embedded: 2,
@@ -30,10 +30,10 @@ export default function TeamDevlogsPage({ params }: PageProps) {
 
       if (!teamKey) return notFound();
 
-      // ✅ lowercase version for DB queries
+      
       const normalizedKey = teamKey.toLowerCase();
 
-      // ✅ cast so TypeScript stops complaining
+      
       const metaKey = teamKey as keyof typeof TEAM_META;
       setMeta(TEAM_META[metaKey]);
 
@@ -44,7 +44,7 @@ export default function TeamDevlogsPage({ params }: PageProps) {
         return;
       }
 
-      // ✅ Fetch from Supabase
+      
       const { data, error } = await supabase
         .from("devlogs")
         .select("id, title, description, media_url, created_at")
@@ -133,7 +133,7 @@ export default function TeamDevlogsPage({ params }: PageProps) {
   );
 }
 
-/* --- helpers --- */
+
 function isYouTube(url: string) {
   try {
     const u = new URL(url);

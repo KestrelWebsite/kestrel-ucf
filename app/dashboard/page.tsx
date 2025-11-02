@@ -176,7 +176,7 @@ export default function DashboardPage() {
     else setMembers(members.filter((m) => m.id !== id));
   };
 
-  // --- Render UI ---
+  
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100 overflow-y-auto py-10">
       <div className="w-full max-w-lg bg-white shadow-md rounded-lg p-8">
@@ -186,7 +186,7 @@ export default function DashboardPage() {
 
         {team ? (
           <>
-            {/* --- Team Update Form (UNCHANGED) --- */}
+            {/* Team Update Form*/}
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Update Team Info
             </h2>
@@ -247,7 +247,7 @@ export default function DashboardPage() {
 
             <hr className="my-8" />
 
-            {/* --- Devlog Form (UNCHANGED) --- */}
+            {/*Devlog Form*/}
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Add a New Devlog
             </h2>
@@ -306,7 +306,7 @@ export default function DashboardPage() {
 
             <hr className="my-8" />
 
-            {/* --- Team Members Section (NEW) --- */}
+            {/*Team Members Section */}
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Manage Team Members
             </h2>

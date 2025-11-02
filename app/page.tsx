@@ -16,54 +16,51 @@ function FloatingDrone({ scrollYProgress }: { scrollYProgress: any }) {
   const { scene } = useGLTF('/InteractiveKesterelView.glb');
   const ref = useRef<THREE.Group>(null);
 
-  // === ROTATION ===
+  
   const rotY = useTransform(
     scrollYProgress,
-    [0, 0.35, 0.55, 0.65, 0.72, 0.8, 1],
-    [0, Math.PI * 1.2, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 2.2]
+    [0, 0.35, 0.45, 0.55, 0.65, 0.72, 0.8, 1],
+    [0, Math.PI * 1.2, Math.PI * 1.4, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 1.8, Math.PI * 2.2]
   );
 
   const rotX = useTransform(
     scrollYProgress,
-    [0, 0.5, 0.55, 0.65, 0.72, 0.8, 1],
-    [0, 0.25 * Math.PI, 0.4 * Math.PI, 0.9 * Math.PI, 0.9 * Math.PI, 0.1 * Math.PI, 0.1 * Math.PI]
+    [0, 0.35, 0.45, 0.55, 0.65, 0.72, 0.8, 1],
+    [0, 0.15 * Math.PI, 0.25 * Math.PI, 0.4 * Math.PI, 0.9 * Math.PI, 0.9 * Math.PI, 0.1 * Math.PI, 0.1 * Math.PI]
   );
 
   const rotZ = useTransform(scrollYProgress, [0, 1], [0, 0.03 * Math.PI]);
 
-  // === POSITION (horizontal & vertical) ===
-  // Keep original movement until Innovation, then bring drone to center
+  
   const posX = useTransform(
     scrollYProgress,
-    [0, 0.18, 0.25, 0.35, 0.45, 0.55, 0.65, 1],
-    [0, 3.6, 0, -3.6, -2.9, 0, 0, 0]
+    [0, 0.15, 0.18, 0.21, 0.35, 0.45, 0.5, 0.55, 0.65, 1],
+    [0, 5, 1.0, -2.5, -3.6, -2.0, -1.0, 0, 0, 0]
   );
+  
 
   const posY = useTransform(
     scrollYProgress,
-    [0, 0.4, 0.55, 0.65, 0.72, 0.8, 1],
-    [-2.0, -1.2, -1.0, 0, 0.2, 0, -1.8]
+    [0, 0.4, 0.45, 0.55, 0.65, 0.72, 0.8, 1],
+    [-2.0, -1.6, -1.2, -1.0, 0, 0.2, 0, 5]
   );
 
-  // === CAMERA ZOOM ===
-// start zooming in earlier (after Innovation ~0.58) and peak sooner (~0.70)
-const baseZoom = useTransform(
-  scrollYProgress,
-  [0, 0.18, 0.25, 0.35, 0.45, 0.5, 0.55, 0.58, 0.65, 1],
-  [9, 11, 11.5, 12, 12, 8, 2, 9, 9, 9]
-);
-
+  
+  const baseZoom = useTransform(
+    scrollYProgress,
+    [0, 0.15, 0.16, 0.21, 0.35, 0.45, 0.5, 0.55, 0.65, 1],
+    [9, 11, 11.5, 12, 10.5, 9, 7, 1, 1, 40]
+  );
 
   const zoomZ = useTransform(baseZoom, (b) => b);
 
-  // === LOOP FRAME (animation) ===
   let t = 0;
   useFrame((state, delta) => {
     t += delta;
     const g = ref.current;
     if (!g) return;
 
-    const s = 0.27 + 0.006 * Math.cos(t * 1.2);
+    const s = 0.27 + 0.006 * Math.cos(t * 1.2); 
     g.scale.setScalar(s);
     g.rotation.set(rotX.get(), rotY.get(), rotZ.get());
     g.position.set(posX.get(), posY.get(), 0);
@@ -80,52 +77,13 @@ const baseZoom = useTransform(
   );
 }
 
+
+
 /* ----------------------------- Overlays (UI) ------------------------------ */
-
-function TopLeftStats() {
-  const [fps, setFps] = useState(60);
-  const [w, setW] = useState<number | null>(null);
-  const [h, setH] = useState<number | null>(null);
-
-  useEffect(() => {
-    let last = performance.now();
-    let frames = 0;
-    let raf = 0;
-    const loop = () => {
-      const now = performance.now();
-      frames++;
-      if (now - last >= 1000) {
-        setFps(frames);
-        frames = 0;
-        last = now;
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-
-    const onResize = () => {
-      setW(window.innerWidth);
-      setH(window.innerHeight);
-    };
-    onResize();
-    window.addEventListener('resize', onResize);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', onResize);
-    };
-  }, []);
-
-  return (
-    <div className="pointer-events-none fixed left-4 top-4 z-[60] text-xs text-white/70">
-      <div>{fps}fps</div>
-      {w && h ? <div>{w}×{h}</div> : null}
-    </div>
-  );
-}
 
 function BottomProgress({ progress }: { progress: number }) {
   return (
-    <div className="fixed inset-x-0 bottom-6 z-[60] flex justify-center">
+    <div className="fixed inset-x-0 bottom-6 z-[60] flex justify-center pointer-events-none">
       <div className="relative h-[2px] w-[70vw] bg-white/10">
         <div
           className="absolute left-0 top-0 h-[2px] bg-white/70"
@@ -140,6 +98,7 @@ function BottomProgress({ progress }: { progress: number }) {
     </div>
   );
 }
+
 
 /* --------------------------------- Page ---------------------------------- */
 
@@ -164,22 +123,26 @@ export default function HomePage() {
   return (
     <main ref={scrollContainerRef} className="relative w-full bg-black text-white overflow-x-hidden">
       {/* Canvas (drone) */}
-      <div className="fixed inset-0 z-[5] pointer-events-none">
-        <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ alpha: true }}>
-          <Stars radius={100} depth={500} count={1000} factor={4} fade speed={1} />
-          <ambientLight intensity={0.8} />
-          <directionalLight position={[10, 10, 5]} intensity={1.2} />
-          <Suspense fallback={null}>
-            <FloatingDrone scrollYProgress={scrollYProgress} />
-            <Environment preset="sunset" />
-            <EffectComposer>
-              <Bloom luminanceThreshold={0.18} luminanceSmoothing={0.9} height={300} />
-            </EffectComposer>
-          </Suspense>
-        </Canvas>
-      </div>
+      <div className="fixed inset-0 z-[5]" style={{ pointerEvents: 'none' }}>
+  <Canvas
+    camera={{ position: [0, 0, 10], fov: 45 }}
+    gl={{ alpha: true }}
+    style={{ pointerEvents: 'none' }}
+  >
+    <Stars radius={100} depth={500} count={1000} factor={4} fade speed={1} />
+    <ambientLight intensity={0.8} />
+    <directionalLight position={[10, 10, 5]} intensity={1.2} />
+    <Suspense fallback={null}>
+      <FloatingDrone scrollYProgress={scrollYProgress} />
+      <Environment preset="sunset" />
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.18} luminanceSmoothing={0.9} height={300} />
+      </EffectComposer>
+    </Suspense>
+  </Canvas>
+</div>
 
-      <TopLeftStats />
+
       <motion.div style={{ opacity: progress }}>
         <BottomProgress progress={(progress as unknown as number) ?? 0} />
       </motion.div>
@@ -188,7 +151,7 @@ export default function HomePage() {
       <div className="relative z-10">
 
         {/* HERO SECTION */}
-        <section className="relative h-[100vh] flex flex-col items-center justify-start pt-[7vh]">
+        <section className="relative h-[100vh] flex flex-col items-center justify-start pt-[6vh]">
           <h1
             className="
               select-none text-[15vw] md:text-[12vw] leading-none font-extrabold tracking-tight
@@ -209,7 +172,6 @@ export default function HomePage() {
             transition={{ duration: 1.2, delay: 0.2 }}
             className="mt-6 text-center text-white/70 text-base md:text-lg tracking-wide"
           >
-            Scroll to reveal more.
           </motion.p>
         </section>
 
@@ -231,8 +193,9 @@ export default function HomePage() {
           </motion.div>
         </section>
 
+
         {/* INNOVATION SECTION */}
-        <section className="relative flex items-center z-[10] py-75">
+        <section className="relative flex items-center z-[10] pt-120 pb-500">
           <motion.div
             initial={{ opacity: 0, x: 80 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -249,23 +212,36 @@ export default function HomePage() {
         </section>
 
         {/* CINEMATIC BLACK VACUUM + CONTRIBUTORS TRANSITION */}
-        <motion.div
-          style={{
-            opacity: useTransform(scrollYProgress, [0.45, 0.5, 0.55, 0.58, 0.65, 1], [0, 0.2, 1, 0.5, 0, 0]),
-          }}
-          className="fixed inset-0 bg-black z-[15] pointer-events-none"
-        />
+<motion.div
+  style={{
+    opacity: useTransform(
+      scrollYProgress,
+      [0.45, 0.5, 0.55, 0.75, 0.85, 0.9],
+      [0, 0.4, 1, 1, 0.1, 0]
+    ),
+  }}
+  className="fixed inset-0 bg-black z-[0] pointer-events-none"
+/>
 
-        <section
-          id="contributors"
-          className="relative z-[20] h-[100vh] flex flex-col items-center justify-center text-white"
-        >
-          <h1 className="text-5xl font-bold mb-10">Our Contributors</h1>
-          <Contributors />
-        </section>
+<section
+  id="contributors"
+  className="relative z-[20] h-[250vh] py-[80vh] flex flex-col items-center justify-center text-white"
+>
+  <motion.div
+    style={{
+      opacity: useTransform(scrollYProgress, [0.65, 0.75, 0.85, 0.9, 1], [1, 1, 1, 1, 1]),
+      y: useTransform(scrollYProgress, [0.65, 0.85], [0, 0]),
+    }}
+    className="flex flex-col items-center justify-center"
+  >
+    <h1 className="text-5xl font-bold mb-10"></h1>
+    <Contributors />
+  </motion.div>
+</section>
+
 
         {/* TEAMS */}
-        <section id="teams" className="relative w-full z-[10] py-75">
+        <section id="teams" className="relative w-full z-[10] py-150">
           <h1 className="text-5xl font-bold text-center mb-14">Our Teams</h1>
           <div className="flex justify-between items-start w-full px-6">
             <div className="flex flex-col gap-10 ml-[6vw]">
@@ -333,7 +309,7 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* --------------------- Footer (UNTOUCHED) --------------------- */}
+      {/* Footer */}
       <footer className="relative border-t border-white/10 bg-black/40 backdrop-blur-xl text-gray-300 py-10 overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-radial from-blue-500/30 via-transparent to-transparent blur-3xl animate-pulse-slow" />

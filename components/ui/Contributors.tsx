@@ -8,28 +8,28 @@ const contributors = [
   {
     name: 'KnightHacks',
     logo: '/logos/knighthackslogo.svg',
-    description: 'KnightHacks supported the development team.',
+    description: 'KnightHacks',
   },
   {
     name: 'AI@UCF',
     logo: '/logos/aiucf.svg',
-    description: 'AI@UCF contributed to research and AI insights.',
+    description: 'AI@UCF',
   },
   {
     name: 'Blue Origin',
     logo: '/logos/blueoriginlogo.svg',
-    description: 'Blue Origin is our primary sponsor.',
+    description: 'Blue Origin',
     isMain: true,
   },
   {
     name: 'IEEE UCF',
     logo: '/logos/ieeeucf.png',
-    description: 'IEEE UCF helped with hardware testing.',
+    description: 'IEEE UCF',
   },
   {
     name: 'ACM UCF',
     logo: '/logos/acmlogo.png',
-    description: 'ACM UCF provided funding for outreach.',
+    description: 'ACM UCF',
   },
 ]
 
@@ -64,8 +64,8 @@ export default function Contributors() {
               <Image
                 src={contributor.logo}
                 alt={contributor.name}
-                width={isMain ? 300 : 190}
-                height={isMain ? 300 : 190}
+                width={isMain ? 500 : 170}
+                height={isMain ? 500 : 170}
                 className="rounded-full object-contain"
               />
               {isHovered && (

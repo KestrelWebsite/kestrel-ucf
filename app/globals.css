@@ -135,3 +135,11 @@
   flex-shrink: 0;
   width: 25vw;
 }
+
+/* Hide extra Radix fallback dropdowns */
+[data-radix-popper-content-wrapper][data-state="closed"],
+[data-radix-popper-content-wrapper][data-state="open"][aria-hidden="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}

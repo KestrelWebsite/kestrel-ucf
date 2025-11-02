@@ -10,43 +10,43 @@ const TEAM_META = {
     id: 1,
     title: "Kestrel’s Hardware Team",
     description:
-      "Airframe, propulsion, and system integration—ensuring every component fits and flies perfectly.",
+      "The Hardware Team builds the physical foundation of the Kestrel UAV—integrating propulsion, power, sensors, and structure to form the stable platform that supports all other systems.",
   },
   embedded: {
     id: 2,
     title: "Kestrel’s Embedded Team",
     description:
-      "Firmware, I/O, control loops, and communication—powering the intelligence inside Kestrel.",
+      "Firmware, I/O, control loops, and communication—powering the intelligence inside Kestrel.X",
   },
   model: {
     id: 3,
     title: "Kestrel’s Model Team",
     description:
-      "3D design, CAD modeling, and rigging for every mechanical part that defines Kestrel’s structure.",
+      "The Model Team develops Kestrel’s AI-driven tracking system, integrating object detection, motion prediction, and identity re-identification to enable precise, real-time rider following.",
   },
   simulation: {
     id: 4,
     title: "Kestrel’s Simulation Team",
     description:
-      "Gazebo, ROS, and testing environments—bringing the drone to life before it ever flies.",
+      "The Simulation Team designs and integrates high-fidelity virtual environments to rigorously test and validate Kestrel’s autonomous systems before real-world deployment.",
   },
   pathing: {
     id: 5,
     title: "Kestrel’s Pathing Team",
     description:
-      "Navigation, obstacle avoidance, and decision logic—charting Kestrel’s flight paths safely and efficiently.",
+      "Navigation, obstacle avoidance, and decision logic—charting Kestrel’s flight paths safely and efficiently.X",
   },
   website: {
     id: 6,
     title: "Kestrel’s Website Team",
     description:
-      "Frontend, dashboards, and visualization—showcasing Kestrel’s progress to the world.",
+      "The Website Team transforms Kestrel’s engineering and research into an interactive, visually compelling platform that bridges innovation and visibility through cutting-edge web technologies and real-time integration.",
   },
   aerostructures: {
     id: 7,
     title: "Kestrel’s Aerostructures Team",
     description:
-      "Designing and analyzing the structural framework of the Kestrel drone, ensuring strength, efficiency, and aerodynamic performance in every component.",
+      "Designing and analyzing the structural framework of the Kestrel drone, ensuring strength, efficiency, and aerodynamic performance in every component.X",
   },
 };
 
@@ -84,7 +84,7 @@ export default function TeamPage() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      {/* --- Header Section --- */}
+      {/*Header Section*/}
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-8 text-center">
         <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
           {teamInfo.title}
@@ -94,7 +94,7 @@ export default function TeamPage() {
         </p>
       </section>
 
-      {/* --- Team Members Section --- */}
+      {/*Team Members Section*/}
       <section className="max-w-7xl mx-auto px-6 pb-20">
         <h2 className="text-2xl font-semibold">Team Members</h2>
 
