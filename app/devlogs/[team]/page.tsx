@@ -8,7 +8,22 @@ import { TEAM_META, teamFromSlug } from "@/lib/devlogs";
 
 type PageProps = { params: Promise<{ team: string }> };
 
+// each devlog returned from Supabase
+interface Devlog {
+  id: number | string;
+  title: string;
+  description: string;
+  media_url?: string | null;
+  created_at: string;
+}
 
+// structure for the meta info of a team
+interface TeamMeta {
+  title: string;
+  blurb: string;
+}
+
+// mapping between team name and team ID
 const TEAM_ID_MAP: Record<string, number> = {
   hardware: 1,
   embedded: 2,
@@ -19,9 +34,9 @@ const TEAM_ID_MAP: Record<string, number> = {
 };
 
 export default function TeamDevlogsPage({ params }: PageProps) {
-  const [devlogs, setDevlogs] = useState<any[]>([]);
+  const [devlogs, setDevlogs] = useState<Devlog[]>([]); 
   const [loading, setLoading] = useState(true);
-  const [meta, setMeta] = useState<any>(null);
+  const [meta, setMeta] = useState<TeamMeta | null>(null); 
 
   useEffect(() => {
     const fetchDevlogs = async () => {
@@ -30,10 +45,7 @@ export default function TeamDevlogsPage({ params }: PageProps) {
 
       if (!teamKey) return notFound();
 
-      
       const normalizedKey = teamKey.toLowerCase();
-
-      
       const metaKey = teamKey as keyof typeof TEAM_META;
       setMeta(TEAM_META[metaKey]);
 
@@ -44,7 +56,6 @@ export default function TeamDevlogsPage({ params }: PageProps) {
         return;
       }
 
-      
       const { data, error } = await supabase
         .from("devlogs")
         .select("id, title, description, media_url, created_at")
@@ -132,7 +143,6 @@ export default function TeamDevlogsPage({ params }: PageProps) {
     </main>
   );
 }
-
 
 function isYouTube(url: string) {
   try {

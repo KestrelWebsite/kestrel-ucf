@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import type { Team, TeamMember, Devlog } from "@/types/supabase"; 
 
 export default function DashboardPage() {
   // --- Team state ---
-  const [team, setTeam] = useState<any>(null);
+  const [team, setTeam] = useState<Team | null>(null); 
   const [status, setStatus] = useState("");
   const [readiness, setReadiness] = useState("");
   const [objectives, setObjectives] = useState("");
@@ -18,9 +19,9 @@ export default function DashboardPage() {
   const [devlogMessage, setDevlogMessage] = useState("");
 
   // --- Team Members state ---
-  const [members, setMembers] = useState<any[]>([]);
-  const [memberForm, setMemberForm] = useState({
-    id: null,
+  const [members, setMembers] = useState<TeamMember[]>([]); 
+  const [memberForm, setMemberForm] = useState<Partial<TeamMember>>({ 
+    id: undefined,
     name: "",
     role: "",
     major: "",
@@ -44,7 +45,7 @@ export default function DashboardPage() {
         .single();
 
       if (teamData) {
-        setTeam(teamData);
+        setTeam(teamData as Team);
         setStatus(teamData.status ?? "");
         setReadiness(teamData.launch_readiness ?? "");
         setObjectives((teamData.step4_objectives ?? []).join(", "));
@@ -56,7 +57,7 @@ export default function DashboardPage() {
           .eq("team_id", teamData.id);
 
         if (memberError) console.error("Error fetching members:", memberError);
-        else setMembers(memberData || []);
+        else setMembers((memberData as TeamMember[]) || []);
       }
     };
     getUserTeam();
@@ -95,7 +96,7 @@ export default function DashboardPage() {
         media_url: devlogMedia,
         team_id: team.id,
         owner_id: user.id,
-      },
+      } satisfies Partial<Devlog>, 
     ]);
 
     if (error) {
@@ -117,13 +118,13 @@ export default function DashboardPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const payload = {
-      name: memberForm.name,
-      role: memberForm.role,
-      major: memberForm.major,
-      contribution: memberForm.contribution,
-      linkedin_url: memberForm.linkedin_url,
-      github_url: memberForm.github_url,
+    const payload: Partial<TeamMember> = {
+      name: memberForm.name ?? "",
+      role: memberForm.role ?? "",
+      major: memberForm.major ?? "",
+      contribution: memberForm.contribution ?? "",
+      linkedin_url: memberForm.linkedin_url ?? "",
+      github_url: memberForm.github_url ?? "",
       team_id: team.id,
       owner_id: user.id,
     };
@@ -146,7 +147,7 @@ export default function DashboardPage() {
     } else {
       setMemberMessage("Member saved successfully!");
       setMemberForm({
-        id: null,
+        id: undefined,
         name: "",
         role: "",
         major: "",
@@ -159,12 +160,12 @@ export default function DashboardPage() {
         .from("team_members")
         .select("*")
         .eq("team_id", team.id);
-      setMembers(updatedMembers || []);
+      setMembers((updatedMembers as TeamMember[]) || []);
     }
   };
 
   // --- Edit Member ---
-  const handleEditMember = (member: any) => {
+  const handleEditMember = (member: TeamMember) => {
     setMemberForm(member);
   };
 
@@ -176,7 +177,6 @@ export default function DashboardPage() {
     else setMembers(members.filter((m) => m.id !== id));
   };
 
-  
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100 overflow-y-auto py-10">
       <div className="w-full max-w-lg bg-white shadow-md rounded-lg p-8">
@@ -316,7 +316,7 @@ export default function DashboardPage() {
                 <label className="block text-sm font-medium text-gray-700">Name</label>
                 <input
                   type="text"
-                  value={memberForm.name}
+                  value={memberForm.name ?? ""}
                   onChange={(e) => setMemberForm({ ...memberForm, name: e.target.value })}
                   className="mt-1 w-full border rounded-md px-3 py-2 text-gray-900"
                   placeholder="Enter member's full name"
@@ -328,7 +328,7 @@ export default function DashboardPage() {
                 <label className="block text-sm font-medium text-gray-700">Role</label>
                 <input
                   type="text"
-                  value={memberForm.role}
+                  value={memberForm.role ?? ""}
                   onChange={(e) => setMemberForm({ ...memberForm, role: e.target.value })}
                   className="mt-1 w-full border rounded-md px-3 py-2 text-gray-900"
                   placeholder="e.g., Software Developer, Team Lead"
@@ -339,7 +339,7 @@ export default function DashboardPage() {
                 <label className="block text-sm font-medium text-gray-700">Major</label>
                 <input
                   type="text"
-                  value={memberForm.major}
+                  value={memberForm.major ?? ""}
                   onChange={(e) => setMemberForm({ ...memberForm, major: e.target.value })}
                   className="mt-1 w-full border rounded-md px-3 py-2 text-gray-900"
                   placeholder="e.g., CS, CpE (VLSI Track)"
@@ -349,7 +349,7 @@ export default function DashboardPage() {
               <div className="mb-3">
                 <label className="block text-sm font-medium text-gray-700">Contribution</label>
                 <textarea
-                  value={memberForm.contribution}
+                  value={memberForm.contribution ?? ""}
                   onChange={(e) => setMemberForm({ ...memberForm, contribution: e.target.value })}
                   className="mt-1 w-full border rounded-md px-3 py-2 text-gray-900"
                   rows={3}
@@ -361,7 +361,7 @@ export default function DashboardPage() {
                 <label className="block text-sm font-medium text-gray-700">LinkedIn URL</label>
                 <input
                   type="text"
-                  value={memberForm.linkedin_url}
+                  value={memberForm.linkedin_url ?? ""}
                   onChange={(e) => setMemberForm({ ...memberForm, linkedin_url: e.target.value })}
                   className="mt-1 w-full border rounded-md px-3 py-2 text-gray-900"
                   placeholder="https://linkedin.com/in/username"
@@ -372,7 +372,7 @@ export default function DashboardPage() {
                 <label className="block text-sm font-medium text-gray-700">GitHub URL</label>
                 <input
                   type="text"
-                  value={memberForm.github_url}
+                  value={memberForm.github_url ?? ""}
                   onChange={(e) => setMemberForm({ ...memberForm, github_url: e.target.value })}
                   className="mt-1 w-full border rounded-md px-3 py-2 text-gray-900"
                   placeholder="https://github.com/username"

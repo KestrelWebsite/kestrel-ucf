@@ -1,3 +1,5 @@
+/*
+
 import { getDevlogById } from "@/app/api/devlogs/hooks";
 import { notFound } from "next/navigation";
 import AdminDevlogDetails from "./AdminDevlogDetails";
@@ -24,3 +26,7 @@ const DevlogEditPage = async (props: Props) => {
 export const dynamic = "force-dynamic";
 
 export default DevlogEditPage;
+*/
+
+// keep file valid
+export const placeholder = true;

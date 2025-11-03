@@ -1,18 +1,18 @@
 'use client';
 
-import { useEffect, useRef, useState, Suspense } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import Lenis from '@studio-freight/lenis';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, useGLTF, Stars } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import Contributors from '@/components/ui/Contributors';
 import { Cpu, Map, Wrench, Box, Monitor, Globe } from 'lucide-react';
-
+import Link from "next/link";
 /* ----------------------------- Drone Component ---------------------------- */
 
-function FloatingDrone({ scrollYProgress }: { scrollYProgress: any }) {
+function FloatingDrone({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) {
   const { scene } = useGLTF('/models/InteractiveBKesterelView_optimized.glb');
   const ref = useRef<THREE.Group>(null);
 
@@ -34,8 +34,8 @@ function FloatingDrone({ scrollYProgress }: { scrollYProgress: any }) {
   
   const posX = useTransform(
     scrollYProgress,
-    [0, 0.15, 0.18, 0.21, 0.35, 0.45, 0.5, 0.55, 0.65, 1],
-    [0, 5, 1.0, -2.5, -3.6, -2.0, -1.0, 0, 0, 0]
+    [0, 0.10, 0.16, 0.18, 0.21, 0.35, 0.45, 0.5, 0.55, 0.65, 1],
+    [0, 3, 2, 1.0, -2.5, -3.6, -2.0, -1.0, 0, 0, 0]
   );
   
 
@@ -298,70 +298,88 @@ export default function HomePage() {
               Learn about our development process, challenges, and achievements...
             </p>
             <div className="space-x-6 mt-4">
-              <a href="/devlogs" className="underline text-white hover:text-gray-300">
+              <Link href="/devlogs" className="underline text-white hover:text-gray-300">
                 Read Devlogs
-              </a>
-              <a href="/teams" className="underline text-white hover:text-gray-300">
+              </Link>
+              <Link href="/teams" className="underline text-white hover:text-gray-300">
                 Meet the Teams
-              </a>
+              </Link>
             </div>
           </motion.div>
         </section>
       </div>
 
       {/* Footer */}
-      <footer className="relative border-t border-white/10 bg-black/40 backdrop-blur-xl text-gray-300 py-10 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-radial from-blue-500/30 via-transparent to-transparent blur-3xl animate-pulse-slow" />
-          <div className="absolute -bottom-20 left-1/2 w-[600px] h-[400px] -translate-x-1/2 bg-blue-400/10 rounded-full blur-[160px]" />
-        </div>
+<footer className="relative border-t border-white/10 bg-black/40 backdrop-blur-xl text-gray-300 py-10 overflow-hidden">
+  <div className="absolute inset-0">
+    <div className="absolute inset-0 bg-gradient-radial from-blue-500/30 via-transparent to-transparent blur-3xl animate-pulse-slow" />
+    <div className="absolute -bottom-20 left-1/2 w-[600px] h-[400px] -translate-x-1/2 bg-blue-400/10 rounded-full blur-[160px]" />
+  </div>
 
-        <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 relative z-10">
-          <div>
-            <h4 className="text-white font-semibold mb-4">About</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="/#about" className="hover:text-white">About Project</a></li>
-              <li><a href="/#contributors" className="hover:text-white">Contributors</a></li>
-              <li><a href="/#teams" className="hover:text-white">Teams</a></li>
-              <li><a href="/#journey" className="hover:text-white">More</a></li>
-            </ul>
-          </div>
+  <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 relative z-10">
+    <div>
+      <h4 className="text-white font-semibold mb-4">About</h4>
+      <ul className="space-y-2 text-sm">
+        <li><Link href="/#about" className="hover:text-white">About Project</Link></li>
+        <li><Link href="/#contributors" className="hover:text-white">Contributors</Link></li>
+        <li><Link href="/#teams" className="hover:text-white">Teams</Link></li>
+        <li><Link href="/#journey" className="hover:text-white">More</Link></li>
+      </ul>
+    </div>
 
-          <div>
-            <h4 className="text-white font-semibold mb-4">Teams</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="/teams/hardware" className="hover:text-white">Hardware</a></li>
-              <li><a href="/teams/embedded" className="hover:text-white">Embedded</a></li>
-              <li><a href="/teams/simulation" className="hover:text-white">Simulation</a></li>
-              <li><a href="/teams/pathing" className="hover:text-white">Pathing</a></li>
-              <li><a href="/teams/model" className="hover:text-white">Modeling</a></li>
-              <li><a href="/teams/website" className="hover:text-white">Website</a></li>
-              <li><a href="/teams/aerostructures" className="hover:text-white">Aerostructures</a></li>
-            </ul>
-          </div>
+    <div>
+      <h4 className="text-white font-semibold mb-4">Teams</h4>
+      <ul className="space-y-2 text-sm">
+        <li><Link href="/teams/hardware" className="hover:text-white">Hardware</Link></li>
+        <li><Link href="/teams/embedded" className="hover:text-white">Embedded</Link></li>
+        <li><Link href="/teams/simulation" className="hover:text-white">Simulation</Link></li>
+        <li><Link href="/teams/pathing" className="hover:text-white">Pathing</Link></li>
+        <li><Link href="/teams/model" className="hover:text-white">Modeling</Link></li>
+        <li><Link href="/teams/website" className="hover:text-white">Website</Link></li>
+        <li><Link href="/teams/aerostructures" className="hover:text-white">Aerostructures</Link></li>
+      </ul>
+    </div>
 
-          <div>
-            <h4 className="text-white font-semibold mb-4">Media</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="https://www.youtube.com/@ProjectKestrel" target="_blank" rel="noopener noreferrer" className="hover:text-white">YouTube</a></li>
-              <li><a href="https://github.com/Autonomous-droneProject/Kestrel" target="_blank" rel="noopener noreferrer" className="hover:text-white">GitHub</a></li>
-            </ul>
-          </div>
+    <div>
+      <h4 className="text-white font-semibold mb-4">Media</h4>
+      <ul className="space-y-2 text-sm">
+        <li>
+          <a
+            href="https://www.youtube.com/@ProjectKestrel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white"
+          >
+            YouTube
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/Autonomous-droneProject/Kestrel"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white"
+          >
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
 
-          <div>
-            <h4 className="text-white font-semibold mb-4">Resources</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="/devlogs" className="hover:text-white">Devlogs</a></li>
-              <li><a href="mailto:teamlead@example.com" className="hover:text-white">Contact</a></li>
-            </ul>
-          </div>
-        </div>
+    <div>
+      <h4 className="text-white font-semibold mb-4">Resources</h4>
+      <ul className="space-y-2 text-sm">
+        <li><Link href="/devlogs" className="hover:text-white">Devlogs</Link></li>
+        <li><a href="mailto:teamlead@example.com" className="hover:text-white">Contact</a></li>
+      </ul>
+    </div>
+  </div>
 
-        <p className="text-center text-gray-500 text-sm mt-10 relative z-10">
-          Developed by students at the University of Central Florida — In collaboration with Blue Origin and affiliated
-          UCF clubs. <br />© 2025 Kestrel UCF. All rights reserved.
-        </p>
-      </footer>
-    </main>
-  );
+  <p className="text-center text-gray-500 text-sm mt-10 relative z-10">
+    Developed by students at the University of Central Florida — In collaboration with Blue Origin and affiliated
+    UCF clubs. <br />© 2025 Kestrel UCF. All rights reserved.
+  </p>
+</footer>
+</main>
+);
 }

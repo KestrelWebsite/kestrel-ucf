@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, notFound } from "next/navigation";
 import MemberCard from "../_components/MemberCard";
 import { supabase } from "@/lib/supabaseClient";
+import type { TeamMember } from "@/types/supabase"; 
 
 const TEAM_META = {
   hardware: {
@@ -55,7 +56,8 @@ export default function TeamPage() {
   const teamSlug = (params?.team as string)?.toLowerCase();
   const teamInfo = TEAM_META[teamSlug as keyof typeof TEAM_META];
 
-  const [members, setMembers] = useState<any[]>([]);
+  
+  const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch team members from Supabase
@@ -64,10 +66,10 @@ export default function TeamPage() {
 
     const fetchMembers = async () => {
       const { data, error } = await supabase
-        .from("team_members")
-        .select("id, name, role, major, contribution, linkedin_url, github_url")
-        .eq("team_id", teamInfo.id)
-        .order("created_at", { ascending: true });
+  .from("team_members")
+  .select("*") 
+  .eq("team_id", teamInfo.id)
+  .order("created_at", { ascending: true });
 
       if (error) {
         console.error("Error fetching team members:", error);

@@ -2,6 +2,7 @@ import React from "react";
 import placeholder from "@/public/ArduinoBoard.png";
 import TeamCard from "./_components/TeamCard";
 import { supabase } from "@/lib/supabaseClient";
+import type { Team } from "@/types/supabase"; 
 
 export default async function TeamsPage() {
   const { data: teamsData, error } = await supabase.from("teams").select("*");
@@ -10,10 +11,11 @@ export default async function TeamsPage() {
     console.error("Error fetching teams:", error.message);
   }
 
+  
   const progressMap = (teamsData ?? []).reduce((acc, t) => {
     acc[t.id] = t;
     return acc;
-  }, {} as Record<number, any>);
+  }, {} as Record<number, Team>);
 
   const cards = [
     {
@@ -61,8 +63,7 @@ export default async function TeamsPage() {
     {
       id: 7,
       title: "Aerostructures",
-      description:
-        "Structural design, aerodynamic efficiency.X",
+      description: "Structural design, aerodynamic efficiency.X",
       image: placeholder,
       link: "/teams/aerostructures",
     },
@@ -79,13 +80,12 @@ export default async function TeamsPage() {
           Kestrel Teams
         </h1>
         <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
-        Discover the purpose, leadership, and innovations driving each Kestrel team.
+          Discover the purpose, leadership, and innovations driving each Kestrel team.
         </p>
       </section>
 
       {/* Cards Section */}
       <section className="max-w-7xl mx-auto px-6 pb-24">
-        {/* Unified grid for consistent card width & height */}
         <div
           className="
             grid 
@@ -118,10 +118,10 @@ export default async function TeamsPage() {
             );
           })}
 
-          {/* Spacer row break (forces new line for next 3) */}
+          {/* Spacer row break */}
           <div className="col-span-full h-0" />
 
-          {/* Bottom row (3 centered cards)*/}
+          {/* Bottom row (3 centered cards) */}
           <div className="col-span-full flex justify-center gap-10 flex-wrap">
             {bottomRow.map((card) => {
               const progress = progressMap[card.id] || {};
