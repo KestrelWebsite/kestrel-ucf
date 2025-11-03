@@ -29,4 +29,4 @@ export default DevlogEditPage;
 */
 
 // keep file valid
-export const placeholder = true;
+//export const placeholder = true;
