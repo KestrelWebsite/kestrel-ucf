@@ -13,7 +13,7 @@ import Link from "next/link";
 /* ----------------------------- Drone Component ---------------------------- */
 
 function FloatingDrone({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) {
-  const { scene } = useGLTF('/models/InteractiveBKesterelView_optimized.glb');
+  const { scene } = useGLTF('/models/InteractiveBKestrelView_optimized.glb');
   const ref = useRef<THREE.Group>(null);
 
   
