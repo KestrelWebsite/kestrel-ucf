@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { TEAM_META, teamFromSlug } from "@/lib/devlogs";
+import DevlogCard from "../_components/DevlogCard";
 
 type PageProps = { params: Promise<{ team: string }> };
 
@@ -58,11 +59,8 @@ export default function TeamDevlogsPage({ params }: PageProps) {
         .eq("team_id", teamId)
         .order("created_at", { ascending: false });
 
-      if (error) {
-        console.error("Error fetching devlogs:", error);
-      } else {
-        setDevlogs(data ?? []);
-      }
+      if (error) console.error("Error fetching devlogs:", error);
+      else setDevlogs(data ?? []);
 
       setLoading(false);
     };
@@ -91,61 +89,28 @@ export default function TeamDevlogsPage({ params }: PageProps) {
         ) : devlogs.length === 0 ? (
           <p className="text-gray-400">No devlogs yet for this team.</p>
         ) : (
-          devlogs.map((d) => (
-            <article
-              key={d.id}
-              className="rounded-lg border border-white/10 p-5 hover:border-white/20 transition"
-            >
-              <header className="flex items-start justify-between gap-4">
-                <h2 className="text-xl font-semibold">{d.title}</h2>
-                <span className="text-xs text-white/60 border border-white/10 rounded px-2 py-0.5">
-                  {meta.title}
-                </span>
-              </header>
+          devlogs.map((d) => {
+            const isVideo = isYouTube(d.media_url ?? "");
+            const isImageFile = isImage(d.media_url ?? "");
+            const isDocFile = isPDForDoc(d.media_url ?? "");
 
-              <p className="mt-2 text-gray-200">{d.description}</p>
+            const photoUrl = isImageFile ? toDirectDriveLink(d.media_url ?? "") : null;
+            const videoUrl = isVideo ? d.media_url : null;
 
-              {d.media_url && (
-                <div className="mt-4">
-                  {isYouTube(d.media_url) ? (
-                    <div className="w-full aspect-video">
-                      <iframe
-                        className="w-full h-full rounded-lg"
-                        src={toYouTubeEmbed(d.media_url)!}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      />
-                    </div>
-                  ) : isImage(d.media_url) ? (
-                    <img
-                      src={toDirectDriveLink(d.media_url)}
-                      alt={d.title}
-                      className="mt-4 w-full rounded-lg border border-white/10"
-                    />
-                  ) : isPDForDoc(d.media_url) ? (
-                    <iframe
-                      src={toDirectDrivePreview(d.media_url)}
-                      className="w-full h-[80vh] rounded-lg border border-white/10"
-                      allow="autoplay"
-                    />
-                  ) : (
-                    <a
-                      href={d.media_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-400 underline"
-                    >
-                      Open resource
-                    </a>
-                  )}
-                </div>
-              )}
-
-              <p className="text-xs text-gray-400 mt-2">
-                Added {new Date(d.created_at).toLocaleDateString()}
-              </p>
-            </article>
-          ))
+            return (
+              <DevlogCard
+                key={d.id}
+                devlog={{
+                  id: d.id,
+                  title: d.title,
+                  description: d.description,
+                  createdAt: d.created_at,
+                  photoUrl,
+                  videoUrl,
+                } as any}
+              />
+            );
+          })
         )}
       </section>
     </main>
@@ -161,35 +126,8 @@ function isYouTube(url: string) {
   }
 }
 
-function toYouTubeEmbed(url: string) {
-  try {
-    const u = new URL(url);
-    if (u.hostname.includes("youtube.com")) {
-      const id = u.searchParams.get("v");
-      return id ? `https://www.youtube.com/embed/${id}` : null;
-    }
-    if (u.hostname === "youtu.be") {
-      const id = u.pathname.slice(1);
-      return id ? `https://www.youtube.com/embed/${id}` : null;
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
 function isImage(url: string) {
   return /\.(png|jpe?g|gif|webp|svg)$/i.test(url) || url.includes("drive.google.com");
-}
-
-function toDirectDriveLink(url: string) {
-  if (url.includes("drive.google.com")) {
-    const match = url.match(/[-\w]{25,}/);
-    if (match) {
-      return `https://drive.google.com/uc?export=view&id=${match[0]}`;
-    }
-  }
-  return url;
 }
 
 function isPDForDoc(url: string) {
@@ -200,15 +138,10 @@ function isPDForDoc(url: string) {
   );
 }
 
-function toDirectDrivePreview(url: string) {
+function toDirectDriveLink(url: string) {
   if (url.includes("drive.google.com")) {
     const match = url.match(/[-\w]{25,}/);
-    if (match) {
-      return `https://drive.google.com/file/d/${match[0]}/preview`;
-    }
-  }
-  if (url.includes("docs.google.com")) {
-    return url.replace("/edit", "/preview");
+    if (match) return `https://drive.google.com/uc?export=view&id=${match[0]}`;
   }
   return url;
 }
