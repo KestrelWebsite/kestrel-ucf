@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { useTransform, MotionValue, useMotionValueEvent } from "framer-motion";
+import { useTransform, MotionValue} from "framer-motion";
 
 export default function MobileDrone({
   scrollYProgress,

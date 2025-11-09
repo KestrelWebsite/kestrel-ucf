@@ -8,7 +8,6 @@ import { Environment, useGLTF, Stars } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import Contributors from '@/components/ui/Contributors';
-import { Cpu, Map, Wrench, Box, Monitor, Globe } from 'lucide-react';
 import Link from "next/link";
 import MobileDrone from "@/app/components/MobileDrone";
 import MobileFooter from "@/app/components/MobileFooter";
@@ -241,11 +240,11 @@ export default function HomePage() {
       Innovation Through Teamwork
     </h2>
     <p className="text-lg text-gray-300 leading-relaxed">
-      Whether it's object detection, pathfinding, or dynamic control, Kestrel aims to provide a 
-      comprehensive platform for learning, research, and innovation in autonomous systems.
-      Each Kestrel subteam focuses on specialized goals—hardware engineering, embedded systems,
-      autonomous pathing, simulation, and web visualization.
-    </p>
+    Whether it{ "'" }s object detection, pathfinding, or dynamic control, Kestrel aims to provide a 
+    comprehensive platform for learning, research, and innovation in autonomous systems.
+    Each Kestrel subteam focuses on specialized goals—hardware engineering, embedded systems,
+    autonomous pathing, simulation, and web visualization.
+  </p>
   </motion.div>
 </section>
 
@@ -265,11 +264,11 @@ export default function HomePage() {
       Innovation Through Teamwork
     </h2>
     <p className="text-gray-300 text-base leading-[1.55] tracking-wide">
-      Whether it's object detection, pathfinding, or dynamic control, Kestrel aims to provide a 
-      comprehensive platform for learning, research, and innovation in autonomous systems.
-      Each Kestrel subteam focuses on specialized goals—hardware engineering, embedded systems,
-      autonomous pathing, simulation, and web visualization.
-    </p>
+    Whether it{ "'" }s object detection, pathfinding, or dynamic control, Kestrel aims to provide a 
+    comprehensive platform for learning, research, and innovation in autonomous systems.
+    Each Kestrel subteam focuses on specialized goals—hardware engineering, embedded systems,
+    autonomous pathing, simulation, and web visualization.
+  </p>
   </motion.div>
 </section>
 
