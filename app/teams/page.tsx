@@ -2,7 +2,9 @@ import React from "react";
 import placeholder from "@/public/ArduinoBoard.png";
 import TeamCard from "./_components/TeamCard";
 import { supabase } from "@/lib/supabaseClient";
-import type { Team } from "@/types/supabase"; 
+import type { Team } from "@/types/supabase";
+
+export const revalidate = 0;
 
 export default async function TeamsPage() {
   const { data: teamsData, error } = await supabase.from("teams").select("*");
@@ -11,7 +13,6 @@ export default async function TeamsPage() {
     console.error("Error fetching teams:", error.message);
   }
 
-  
   const progressMap = (teamsData ?? []).reduce((acc, t) => {
     acc[t.id] = t;
     return acc;
@@ -69,12 +70,8 @@ export default async function TeamsPage() {
     },
   ];
 
-  const topRow = cards.slice(0, 4);
-  const bottomRow = cards.slice(4);
-
   return (
     <main className="min-h-screen bg-black text-white">
-      {/* Header */}
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-12 text-center">
         <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
           Kestrel Teams
@@ -84,21 +81,10 @@ export default async function TeamsPage() {
         </p>
       </section>
 
-      {/* Cards Section */}
-      <section className="max-w-7xl mx-auto px-6 pb-24">
-        <div
-          className="
-            grid 
-            grid-cols-1 
-            sm:grid-cols-2 
-            lg:grid-cols-4 
-            gap-10 
-            justify-items-center 
-            place-content-center
-          "
-        >
-          {/* Top row (4 cards) */}
-          {topRow.map((card) => {
+      <section className="max-w-7xl mx-auto px-6 pb-24 flex flex-col items-center">
+        {/* First row of cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
+          {cards.slice(0, 4).map((card) => {
             const progress = progressMap[card.id] || {};
             return (
               <div
@@ -117,32 +103,29 @@ export default async function TeamsPage() {
               </div>
             );
           })}
+        </div>
 
-          {/* Spacer row break */}
-          <div className="col-span-full h-0" />
-
-          {/* Bottom row (3 centered cards) */}
-          <div className="col-span-full flex justify-center gap-10 flex-wrap">
-            {bottomRow.map((card) => {
-              const progress = progressMap[card.id] || {};
-              return (
-                <div
-                  key={card.id}
-                  className="w-full sm:w-auto max-w-[320px] h-full flex justify-center"
-                >
-                  <TeamCard
-                    title={card.title}
-                    description={card.description}
-                    image={card.image}
-                    link={card.link}
-                    status={progress.status ?? undefined}
-                    launchReadiness={progress.launch_readiness ?? undefined}
-                    step4Objectives={progress.step4_objectives ?? []}
-                  />
-                </div>
-              );
-            })}
-          </div>
+        {/* Second row of cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center mt-10">
+          {cards.slice(4).map((card) => {
+            const progress = progressMap[card.id] || {};
+            return (
+              <div
+                key={card.id}
+                className="w-full max-w-[320px] h-full flex justify-center"
+              >
+                <TeamCard
+                  title={card.title}
+                  description={card.description}
+                  image={card.image}
+                  link={card.link}
+                  status={progress.status ?? undefined}
+                  launchReadiness={progress.launch_readiness ?? undefined}
+                  step4Objectives={progress.step4_objectives ?? []}
+                />
+              </div>
+            );
+          })}
         </div>
       </section>
     </main>
