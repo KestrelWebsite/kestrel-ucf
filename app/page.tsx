@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, Suspense } from 'react';
-import Lenis from '@studio-freight/lenis';
+import Lenis from 'lenis';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, useGLTF, Stars } from '@react-three/drei';
