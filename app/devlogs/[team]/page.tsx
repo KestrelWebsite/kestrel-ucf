@@ -21,6 +21,15 @@ interface TeamMeta {
   blurb: string;
 }
 
+interface DevlogCardProps {
+  id: string | number;
+  title: string;
+  description: string;
+  createdAt: string;
+  photoUrl: string | null;
+  videoUrl: string | null;
+}
+
 const TEAM_ID_MAP: Record<string, number> = {
   hardware: 1,
   embedded: 2,
@@ -48,7 +57,6 @@ export default function TeamDevlogsPage({ params }: PageProps) {
 
       const teamId = TEAM_ID_MAP[normalizedKey];
       if (!teamId) {
-        console.error("No teamId mapping found for:", normalizedKey);
         setLoading(false);
         return;
       }
@@ -59,9 +67,7 @@ export default function TeamDevlogsPage({ params }: PageProps) {
         .eq("team_id", teamId)
         .order("created_at", { ascending: false });
 
-      if (error) console.error("Error fetching devlogs:", error);
-      else setDevlogs(data ?? []);
-
+      if (!error) setDevlogs(data ?? []);
       setLoading(false);
     };
 
@@ -92,7 +98,6 @@ export default function TeamDevlogsPage({ params }: PageProps) {
           devlogs.map((d) => {
             const isVideo = isYouTube(d.media_url ?? "");
             const isImageFile = isImage(d.media_url ?? "");
-            const isDocFile = isPDForDoc(d.media_url ?? "");
 
             const photoUrl = isImageFile ? toDirectDriveLink(d.media_url ?? "") : null;
             const videoUrl = isVideo ? d.media_url : null;
@@ -100,14 +105,16 @@ export default function TeamDevlogsPage({ params }: PageProps) {
             return (
               <DevlogCard
                 key={d.id}
-                devlog={{
-                  id: d.id,
-                  title: d.title,
-                  description: d.description,
-                  createdAt: d.created_at,
-                  photoUrl,
-                  videoUrl,
-                } as any}
+                devlog={
+                  {
+                    id: d.id,
+                    title: d.title,
+                    description: d.description,
+                    createdAt: d.created_at,
+                    photoUrl,
+                    videoUrl,
+                  } as DevlogCardProps
+                }
               />
             );
           })
@@ -128,14 +135,6 @@ function isYouTube(url: string) {
 
 function isImage(url: string) {
   return /\.(png|jpe?g|gif|webp|svg)$/i.test(url) || url.includes("drive.google.com");
-}
-
-function isPDForDoc(url: string) {
-  return (
-    /\.(pdf|doc|docx|ppt|pptx)$/i.test(url) ||
-    url.includes("drive.google.com") ||
-    url.includes("docs.google.com")
-  );
 }
 
 function toDirectDriveLink(url: string) {

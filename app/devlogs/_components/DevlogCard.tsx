@@ -8,12 +8,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Devlog } from "@prisma/client";
 import PhotoView from "./PhotoView";
 import VideoView from "./VideoView";
 
+interface DevlogCardProps {
+  id: string | number;
+  title: string;
+  description: string;
+  createdAt: string | Date;
+  photoUrl: string | null;
+  videoUrl: string | null;
+}
+
 interface Props {
-  devlog: Devlog;
+  devlog: DevlogCardProps;
 }
 
 function formatCreatedAt(createdAt: Date | string): string {
@@ -29,22 +37,19 @@ const MAX_CHARS = 200;
 const DevlogCard = ({ devlog }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Check if the description exceeds the maximum characters allowed.
   const isTruncatable = devlog.description.length > MAX_CHARS;
 
-  // Compute the text to display.
   const displayText =
     !isTruncatable || isExpanded
       ? devlog.description
       : devlog.description.substring(0, MAX_CHARS) + "...";
 
-  // Toggle function for the button.
   const toggleDescription = () => {
     setIsExpanded((prev) => !prev);
   };
 
   return (
-    <Card className="w-xl">
+    <Card className="w-xl border border-white/10 bg-black/20 backdrop-blur-sm">
       <CardHeader>
         <CardTitle>
           <div className="flex items-center justify-between">
@@ -57,22 +62,19 @@ const DevlogCard = ({ devlog }: Props) => {
         <CardDescription>
           {displayText}
           {isTruncatable && (
-            <>
-              <span className="ml-1"></span>
-              <button
-                onClick={toggleDescription}
-                className="text-blue-500 text-sm cursor-pointer"
-              >
-                {isExpanded ? "Show less" : "Read More"}
-              </button>
-            </>
+            <button
+              onClick={toggleDescription}
+              className="ml-1 text-blue-500 text-sm cursor-pointer hover:underline"
+            >
+              {isExpanded ? "Show less" : "Read More"}
+            </button>
           )}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          <VideoView videoUrl={devlog.videoUrl} />
-          <PhotoView photoUrl={devlog.photoUrl} />
+          {devlog.videoUrl && <VideoView videoUrl={devlog.videoUrl} />}
+          {devlog.photoUrl && <PhotoView photoUrl={devlog.photoUrl} />}
         </div>
         {!devlog.videoUrl && !devlog.photoUrl && (
           <div className="opacity-50 text-sm">No videos or photos</div>
