@@ -1,4 +1,3 @@
-// app/devlogs/[team]/page.tsx
 "use client";
 
 import { notFound } from "next/navigation";
@@ -8,7 +7,6 @@ import { TEAM_META, teamFromSlug } from "@/lib/devlogs";
 
 type PageProps = { params: Promise<{ team: string }> };
 
-// each devlog returned from Supabase
 interface Devlog {
   id: number | string;
   title: string;
@@ -17,13 +15,11 @@ interface Devlog {
   created_at: string;
 }
 
-// structure for the meta info of a team
 interface TeamMeta {
   title: string;
   blurb: string;
 }
 
-// mapping between team name and team ID
 const TEAM_ID_MAP: Record<string, number> = {
   hardware: 1,
   embedded: 2,
@@ -34,9 +30,9 @@ const TEAM_ID_MAP: Record<string, number> = {
 };
 
 export default function TeamDevlogsPage({ params }: PageProps) {
-  const [devlogs, setDevlogs] = useState<Devlog[]>([]); 
+  const [devlogs, setDevlogs] = useState<Devlog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [meta, setMeta] = useState<TeamMeta | null>(null); 
+  const [meta, setMeta] = useState<TeamMeta | null>(null);
 
   useEffect(() => {
     const fetchDevlogs = async () => {
@@ -114,12 +110,24 @@ export default function TeamDevlogsPage({ params }: PageProps) {
                   {isYouTube(d.media_url) ? (
                     <div className="w-full aspect-video">
                       <iframe
-                        className="w-full h-full"
+                        className="w-full h-full rounded-lg"
                         src={toYouTubeEmbed(d.media_url)!}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       />
                     </div>
+                  ) : isImage(d.media_url) ? (
+                    <img
+                      src={toDirectDriveLink(d.media_url)}
+                      alt={d.title}
+                      className="mt-4 w-full rounded-lg border border-white/10"
+                    />
+                  ) : isPDForDoc(d.media_url) ? (
+                    <iframe
+                      src={toDirectDrivePreview(d.media_url)}
+                      className="w-full h-[80vh] rounded-lg border border-white/10"
+                      allow="autoplay"
+                    />
                   ) : (
                     <a
                       href={d.media_url}
@@ -168,4 +176,39 @@ function toYouTubeEmbed(url: string) {
   } catch {
     return null;
   }
+}
+
+function isImage(url: string) {
+  return /\.(png|jpe?g|gif|webp|svg)$/i.test(url) || url.includes("drive.google.com");
+}
+
+function toDirectDriveLink(url: string) {
+  if (url.includes("drive.google.com")) {
+    const match = url.match(/[-\w]{25,}/);
+    if (match) {
+      return `https://drive.google.com/uc?export=view&id=${match[0]}`;
+    }
+  }
+  return url;
+}
+
+function isPDForDoc(url: string) {
+  return (
+    /\.(pdf|doc|docx|ppt|pptx)$/i.test(url) ||
+    url.includes("drive.google.com") ||
+    url.includes("docs.google.com")
+  );
+}
+
+function toDirectDrivePreview(url: string) {
+  if (url.includes("drive.google.com")) {
+    const match = url.match(/[-\w]{25,}/);
+    if (match) {
+      return `https://drive.google.com/file/d/${match[0]}/preview`;
+    }
+  }
+  if (url.includes("docs.google.com")) {
+    return url.replace("/edit", "/preview");
+  }
+  return url;
 }
