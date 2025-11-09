@@ -48,37 +48,69 @@ const DevlogCard = ({ devlog }: Props) => {
     setIsExpanded((prev) => !prev);
   };
 
+  const isDrivePreview = (url: string | null): boolean =>
+    !!url && (url.includes("drive.google.com") || url.includes("docs.google.com"));
+
+  const isPDF = (url: string | null): boolean =>
+    !!url && /\.(pdf)$/i.test(url);
+
   return (
-    <Card className="w-xl border border-white/10 bg-black/20 backdrop-blur-sm">
+    <Card className="w-full border border-white/10 bg-black/20 backdrop-blur-sm rounded-xl shadow-md">
       <CardHeader>
         <CardTitle>
           <div className="flex items-center justify-between">
-            <div>{devlog.title}</div>
-            <div className="opacity-30 font-normal text-sm">
+            <div className="text-white font-semibold">{devlog.title}</div>
+            <div className="opacity-40 font-normal text-sm">
               {formatCreatedAt(devlog.createdAt)}
             </div>
           </div>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-300">
           {displayText}
           {isTruncatable && (
             <button
               onClick={toggleDescription}
-              className="ml-1 text-blue-500 text-sm cursor-pointer hover:underline"
+              className="ml-1 text-blue-400 text-sm cursor-pointer hover:underline"
             >
               {isExpanded ? "Show less" : "Read More"}
             </button>
           )}
         </CardDescription>
       </CardHeader>
+
       <CardContent>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mt-3">
+          {/* YouTube video */}
           {devlog.videoUrl && <VideoView videoUrl={devlog.videoUrl} />}
-          {devlog.photoUrl && <PhotoView photoUrl={devlog.photoUrl} />}
+
+          {/* Image */}
+          {!devlog.videoUrl && devlog.photoUrl && !isDrivePreview(devlog.photoUrl) && (
+            <PhotoView photoUrl={devlog.photoUrl} />
+          )}
+
+          {/* Google Drive or PDF */}
+          {devlog.photoUrl &&
+            (isDrivePreview(devlog.photoUrl) || isPDF(devlog.photoUrl)) && (
+              <iframe
+                src={
+                  devlog.photoUrl.includes("drive.google.com")
+                    ? `https://drive.google.com/file/d/${
+                        devlog.photoUrl.match(/[-\w]{25,}/)?.[0]
+                      }/preview`
+                    : devlog.photoUrl
+                }
+                className="w-full h-[80vh] rounded-lg border border-white/10"
+                allow="autoplay"
+              />
+            )}
+
+          {/* Fallback if no media */}
+          {!devlog.videoUrl && !devlog.photoUrl && (
+            <div className="opacity-50 text-sm text-gray-400">
+              No videos or photos
+            </div>
+          )}
         </div>
-        {!devlog.videoUrl && !devlog.photoUrl && (
-          <div className="opacity-50 text-sm">No videos or photos</div>
-        )}
       </CardContent>
     </Card>
   );
