@@ -131,12 +131,12 @@ export default function DashboardPage() {
 
     let error;
     if (memberForm.id) {
-      // update existing member
-      ({ error } = await supabase
-        .from("team_members")
-        .update(payload)
-        .eq("id", memberForm.id));
-    } else {
+  ({ error } = await supabase
+    .from("team_members")
+    .update(payload)
+    .eq("id", Number(memberForm.id)));
+}
+ else {
       // add new member
       ({ error } = await supabase.from("team_members").insert([payload]));
     }
