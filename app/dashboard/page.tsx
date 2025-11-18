@@ -393,10 +393,11 @@ export default function DashboardPage() {
               {members.map((m) => (
                 <div key={m.id} className="flex justify-between items-start bg-gray-50 p-3 rounded-md border">
                   <div>
-                    <p className="font-semibold">{m.name}</p>
-                    <p className="text-sm text-gray-600">{m.role}</p>
-                    <p className="text-sm text-gray-600">{m.major}</p>
+                    <p className="font-semibold text-gray-900">{m.name}</p>
+                    <p className="text-sm text-gray-700">{m.role}</p>
+                    <p className="text-sm text-gray-700">{m.major}</p>
                   </div>
+
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEditMember(m)}
