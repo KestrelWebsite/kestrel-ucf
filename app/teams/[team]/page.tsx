@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, notFound } from "next/navigation";
 import MemberCard from "../_components/MemberCard";
 import { supabase } from "@/lib/supabaseClient";
-import type { TeamMember } from "@/types/supabase"; 
+import type { TeamMember } from "@/types/supabase";
 
 const TEAM_META = {
   hardware: {
@@ -49,6 +49,14 @@ const TEAM_META = {
     description:
       "Designing and analyzing the structural framework of the Kestrel drone, ensuring strength, efficiency, and aerodynamic performance in every component.X",
   },
+
+  // 🔥 NEW — Leadership PAGE
+  leadership: {
+    id: 999,
+    title: "Kestrel Leadership Team",
+    description:
+      "The Leadership Team guides Kestrel’s strategy, engineering direction, team coordination, and high-level decision-making across all subteams.",
+  },
 };
 
 export default function TeamPage() {
@@ -56,20 +64,19 @@ export default function TeamPage() {
   const teamSlug = (params?.team as string)?.toLowerCase();
   const teamInfo = TEAM_META[teamSlug as keyof typeof TEAM_META];
 
-  
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch team members from Supabase
+  // Fetch members for this team
   useEffect(() => {
     if (!teamInfo) return;
 
     const fetchMembers = async () => {
       const { data, error } = await supabase
-  .from("team_members")
-  .select("*") 
-  .eq("team_id", teamInfo.id)
-  .order("created_at", { ascending: true });
+        .from("team_members")
+        .select("*")
+        .eq("team_id", teamInfo.id)
+        .order("created_at", { ascending: true });
 
       if (error) {
         console.error("Error fetching team members:", error);
@@ -86,7 +93,7 @@ export default function TeamPage() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      {/*Header Section*/}
+      {/* Header Section */}
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-8 text-center">
         <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
           {teamInfo.title}
@@ -96,14 +103,16 @@ export default function TeamPage() {
         </p>
       </section>
 
-      {/*Team Members Section*/}
+      {/* Team Members Section */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
         <h2 className="text-2xl font-semibold">Team Members</h2>
 
         {loading ? (
           <p className="mt-6 text-gray-400">Loading team members...</p>
         ) : members.length === 0 ? (
-          <p className="mt-6 text-gray-400">No team members yet for this team.</p>
+          <p className="mt-6 text-gray-400">
+            No team members yet for this team.
+          </p>
         ) : (
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {members.map((member) => (

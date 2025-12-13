@@ -20,6 +20,13 @@ export default async function TeamsPage() {
 
   const cards = [
     {
+      id: 999,
+      title: "Leadership",
+      description: "Team Leads and Program Leadership",
+      image: placeholder,
+      link: "/teams/leadership",
+    },
+    {
       id: 1,
       title: "Hardware",
       description: "Propulsion systems, structural integration.",
@@ -82,9 +89,25 @@ export default async function TeamsPage() {
       </section>
 
       <section className="max-w-7xl mx-auto px-6 pb-24 flex flex-col items-center">
-        {/* First row of cards */}
+
+        {/* Leadership Row */}
+        <div className="grid grid-cols-1 gap-8 justify-items-center mb-12">
+          <div className="w-full max-w-[320px] h-full flex justify-center">
+            <TeamCard
+              title={cards[0].title}
+              description={cards[0].description}
+              image={cards[0].image}
+              link={cards[0].link}
+              status={progressMap[999]?.status}
+              launchReadiness={progressMap[999]?.launch_readiness}
+              step4Objectives={progressMap[999]?.step4_objectives ?? []}
+            />
+          </div>
+        </div>
+
+        {/* First row of 4 cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center">
-          {cards.slice(0, 4).map((card) => {
+          {cards.slice(1, 5).map((card) => {
             const progress = progressMap[card.id] || {};
             return (
               <div
@@ -105,9 +128,9 @@ export default async function TeamsPage() {
           })}
         </div>
 
-        {/* Second row of cards */}
+        {/* Second row of 3 cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center mt-10">
-          {cards.slice(4).map((card) => {
+          {cards.slice(5).map((card) => {
             const progress = progressMap[card.id] || {};
             return (
               <div
